@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "150728194266",
+    "project_id": "carloversapp-16ea7",
+    "storage_bucket": "carloversapp-16ea7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150728194266:android:c397b298014a38ca480de3",
+        "android_client_info": {
+          "package_name": "com.stefanpopa.carloversapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "150728194266-3odom5dcjccmf3p85v8oc4irh086nbv0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDM4TrlDPGfF4YmekpN8MI-0HbtFeKxDvs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "150728194266-3odom5dcjccmf3p85v8oc4irh086nbv0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
