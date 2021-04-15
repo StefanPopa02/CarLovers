@@ -22,6 +22,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.stefanpopa.carloversapp.R;
 
 import java.util.HashMap;
@@ -38,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mRootRef;
     private ProgressDialog pd;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         mRootRef = FirebaseDatabase.getInstance().getReference();
         pd = new ProgressDialog(this);
+        db = FirebaseFirestore.getInstance();
 
         logInInstead.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser(String emailText, String passwordText, String usernameText, String firstNameText, String lastNameText) {
 
         pd.setMessage("Please Wait");
-        //pd.show();
+        pd.show();
         firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -98,19 +102,43 @@ public class RegisterActivity extends AppCompatActivity {
                     map.put("username", usernameText);
                     map.put("id", firebaseAuth.getCurrentUser().getUid());
 
-                    mRootRef.child("Users").child(firebaseAuth.getCurrentUser().getUid()).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                //pd.dismiss();
-                                Toast.makeText(RegisterActivity.this, "Registration succesfully!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(RegisterActivity.this, WelcomeActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                finish();
-                            }
-                        }
-                    });
+                    // Add a new document with a generated ID
+                    db.collection("users")
+                            .add(map)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Log.d("FireStore", "DocumentSnapshot added with ID: " + documentReference.getId());
+                                    pd.dismiss();
+                                    Toast.makeText(RegisterActivity.this, "Registration succesfully!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(RegisterActivity.this, WelcomeActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w("FireStore", "Error adding document", e);
+                                    pd.dismiss();
+                                }
+                            });
+
+
+//                    mRootRef.child("Users").child(firebaseAuth.getCurrentUser().getUid()).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            if (task.isSuccessful()) {
+//                                //pd.dismiss();
+//                                Toast.makeText(RegisterActivity.this, "Registration succesfully!", Toast.LENGTH_SHORT).show();
+//                                Intent intent = new Intent(RegisterActivity.this, WelcomeActivity.class);
+//                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                startActivity(intent);
+//                                finish();
+//                            }
+//                        }
+//                    });
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
