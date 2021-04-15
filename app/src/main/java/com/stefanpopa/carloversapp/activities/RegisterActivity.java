@@ -3,62 +3,154 @@ package com.stefanpopa.carloversapp.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.stefanpopa.carloversapp.R;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private EditText username;
+    private EditText firstName;
+    private EditText lastName;
     private EditText email;
     private EditText password;
     private Button registerBtn;
+    private TextView logInInstead;
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference mRootRef;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        username = findViewById(R.id.usernameEditText);
+        firstName = findViewById(R.id.firstNameEditText);
+        lastName = findViewById(R.id.lastNameEditText);
         email = findViewById(R.id.emailEditText);
         password = findViewById(R.id.passwordEditText);
         registerBtn = findViewById(R.id.registerBtn);
+        logInInstead = findViewById(R.id.loginUser);
         firebaseAuth = FirebaseAuth.getInstance();
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        pd = new ProgressDialog(this);
+
+        logInInstead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            }
+        });
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String emailText = email.getText().toString().trim();
                 String passwordText = password.getText().toString();
+                String usernameText = username.getText().toString().trim();
+                String firstNameText = firstName.getText().toString().trim();
+                String lastNameText = lastName.getText().toString().trim();
 
-                if (TextUtils.isEmpty(emailText) || TextUtils.isEmpty(passwordText)) {
+                if (TextUtils.isEmpty(emailText) || TextUtils.isEmpty(passwordText) || TextUtils.isEmpty(usernameText) ||
+                        TextUtils.isEmpty(firstNameText) || TextUtils.isEmpty(lastNameText)) {
                     Toast.makeText(RegisterActivity.this, "Empty fields are not allowed", Toast.LENGTH_LONG).show();
                 } else if (passwordText.length() < 6) {
                     Toast.makeText(RegisterActivity.this, "Your password must have atleast 6 characters", Toast.LENGTH_LONG).show();
                 } else {
-                    registerUser(emailText, passwordText);
+                    registerUser(emailText, passwordText, usernameText, firstNameText, lastNameText);
                 }
             }
         });
     }
 
-    private void registerUser(String emailText, String passwordText) {
-        firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+    private void registerUser(String emailText, String passwordText, String usernameText, String firstNameText, String lastNameText) {
+
+        pd.setMessage("Please Wait");
+        //pd.show();
+        firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(RegisterActivity.this, "User registered succesfully!",Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(RegisterActivity.this, "Registration failed!",Toast.LENGTH_LONG).show();
+                if (task.isSuccessful()) {
+                    Toast.makeText(RegisterActivity.this, "A intrat pe success", Toast.LENGTH_SHORT).show();
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("firstName", firstNameText);
+                    map.put("lastName", lastNameText);
+                    map.put("email", emailText);
+                    map.put("username", usernameText);
+                    map.put("id", firebaseAuth.getCurrentUser().getUid());
+
+                    mRootRef.child("Users").child(firebaseAuth.getCurrentUser().getUid()).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                //pd.dismiss();
+                                Toast.makeText(RegisterActivity.this, "Registration succesfully!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(RegisterActivity.this, WelcomeActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    });
                 }
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(RegisterActivity.this, "Registration Failed!", Toast.LENGTH_SHORT).show();
+                Log.d("REGISTER_TAG", e.getMessage());
+                pd.dismiss();
+            }
         });
+
+
+//        firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+//            @Override
+//            public void onSuccess(AuthResult authResult) {
+//                Toast.makeText(RegisterActivity.this, "A intrat pe success", Toast.LENGTH_SHORT).show();
+//                HashMap<String, Object> map = new HashMap<>();
+//                map.put("firstName", firstNameText);
+//                map.put("lastName", lastNameText);
+//                map.put("email", emailText);
+//                map.put("username", usernameText);
+//                map.put("id", firebaseAuth.getCurrentUser().getUid());
+//
+//                mRootRef.child("Users").child(firebaseAuth.getCurrentUser().getUid()).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()) {
+//                            Toast.makeText(RegisterActivity.this, "Register succesfully!", Toast.LENGTH_SHORT).show();
+//                            startActivity(new Intent(RegisterActivity.this, WelcomeActivity.class));
+//                            finish();
+//                        }
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(RegisterActivity.this, "Registration failed!", Toast.LENGTH_SHORT).show();
+//                        Log.d("REGISTER_TAG", e.getMessage());
+//                    }
+//                });
+//            }
+//        });
     }
 }

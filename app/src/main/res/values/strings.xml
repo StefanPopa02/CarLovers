@@ -1,7 +1,11 @@
 <resources>
-    <string name="app_name">CarLoversApp</string>
+    <string name="app_name">CarLovers</string>
     <string name="register">register</string>
     <string name="login">login</string>
-    <string name="emailHint">email</string>
-    <string name="password">password</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="already_a_user_log_in">Already a user? Log In</string>
 </resources>

@@ -1,32 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="12dp"
     tools:context=".activities.RegisterActivity">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/emailHint"
-        android:id="@+id/emailEditText"
-        android:layout_marginTop="100dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:src="@drawable/carlovers_logo_big"/>
 
     <EditText
+        android:background="@drawable/selector_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="@string/username"
+        android:id="@+id/usernameEditText"/>
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="@string/first_name"
+        android:id="@+id/firstNameEditText"/>
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="@string/last_name"
+        android:id="@+id/lastNameEditText"/>
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="@string/email"
+        android:id="@+id/emailEditText"/>
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
         android:hint="@string/password"
-        android:id="@+id/passwordEditText"
-        android:layout_marginTop="100dp"
-        android:layout_below="@+id/emailEditText"
-        android:inputType="textPassword"/>
+        android:id="@+id/passwordEditText"/>
+
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:layout_below="@+id/passwordEditText"
         android:text="@string/register"
+        android:background="@drawable/selector_edit_text"
         android:id="@+id/registerBtn"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/already_a_user_log_in"
+        android:layout_marginTop="10dp"
+        android:id="@+id/loginUser"/>
 
-</RelativeLayout>
+</LinearLayout>
