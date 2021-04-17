@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(RegisterActivity.this, "A intrat pe success", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(RegisterActivity.this, "A intrat pe success", Toast.LENGTH_SHORT).show();
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("firstName", firstNameText);
                     map.put("lastName", lastNameText);
@@ -110,11 +110,18 @@ public class RegisterActivity extends AppCompatActivity {
                                 public void onSuccess(DocumentReference documentReference) {
                                     Log.d("FireStore", "DocumentSnapshot added with ID: " + documentReference.getId());
                                     pd.dismiss();
-                                    Toast.makeText(RegisterActivity.this, "Registration succesfully!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(RegisterActivity.this, WelcomeActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                    finish();
+                                    firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                Toast.makeText(RegisterActivity.this, "Registration succesfully!", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(RegisterActivity.this, WelcomeActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        }
+                                    });
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -124,21 +131,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     pd.dismiss();
                                 }
                             });
-
-
-//                    mRootRef.child("Users").child(firebaseAuth.getCurrentUser().getUid()).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            if (task.isSuccessful()) {
-//                                //pd.dismiss();
-//                                Toast.makeText(RegisterActivity.this, "Registration succesfully!", Toast.LENGTH_SHORT).show();
-//                                Intent intent = new Intent(RegisterActivity.this, WelcomeActivity.class);
-//                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                                startActivity(intent);
-//                                finish();
-//                            }
-//                        }
-//                    });
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -149,36 +141,5 @@ public class RegisterActivity extends AppCompatActivity {
                 pd.dismiss();
             }
         });
-
-
-//        firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-//            @Override
-//            public void onSuccess(AuthResult authResult) {
-//                Toast.makeText(RegisterActivity.this, "A intrat pe success", Toast.LENGTH_SHORT).show();
-//                HashMap<String, Object> map = new HashMap<>();
-//                map.put("firstName", firstNameText);
-//                map.put("lastName", lastNameText);
-//                map.put("email", emailText);
-//                map.put("username", usernameText);
-//                map.put("id", firebaseAuth.getCurrentUser().getUid());
-//
-//                mRootRef.child("Users").child(firebaseAuth.getCurrentUser().getUid()).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if (task.isSuccessful()) {
-//                            Toast.makeText(RegisterActivity.this, "Register succesfully!", Toast.LENGTH_SHORT).show();
-//                            startActivity(new Intent(RegisterActivity.this, WelcomeActivity.class));
-//                            finish();
-//                        }
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(RegisterActivity.this, "Registration failed!", Toast.LENGTH_SHORT).show();
-//                        Log.d("REGISTER_TAG", e.getMessage());
-//                    }
-//                });
-//            }
-//        });
     }
 }
