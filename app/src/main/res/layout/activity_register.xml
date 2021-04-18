@@ -3,73 +3,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     android:padding="12dp"
     tools:context=".activities.RegisterActivity">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="150dp"
-        android:src="@drawable/carlovers_logo_big"/>
+        android:src="@drawable/carlovers_logo_big"
+        android:contentDescription="@string/img_contentDesc"/>
 
     <EditText
-        android:background="@drawable/selector_edit_text"
+        android:id="@+id/usernameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:background="@drawable/selector_edit_text"
         android:hint="@string/username"
-        android:id="@+id/usernameEditText"/>
+        android:padding="10dp" />
 
     <EditText
-        android:layout_marginTop="10dp"
-        android:background="@drawable/selector_edit_text"
+        android:id="@+id/firstNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_edit_text"
         android:hint="@string/first_name"
-        android:id="@+id/firstNameEditText"/>
+        android:padding="10dp" />
 
     <EditText
-        android:layout_marginTop="10dp"
-        android:background="@drawable/selector_edit_text"
+        android:id="@+id/lastNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_edit_text"
         android:hint="@string/last_name"
-        android:id="@+id/lastNameEditText"/>
+        android:padding="10dp" />
 
     <EditText
-        android:layout_marginTop="10dp"
-        android:background="@drawable/selector_edit_text"
+        android:id="@+id/emailEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_edit_text"
         android:hint="@string/email"
-        android:id="@+id/emailEditText"/>
+        android:padding="10dp" />
 
     <EditText
-        android:layout_marginTop="10dp"
-        android:background="@drawable/selector_edit_text"
+        android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:inputType="textPassword"
+        android:background="@drawable/selector_edit_text"
         android:hint="@string/password"
-        android:id="@+id/passwordEditText"/>
+        android:padding="10dp" />
 
 
     <Button
+        android:id="@+id/registerBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:text="@string/register"
         android:background="@drawable/selector_edit_text"
-        android:id="@+id/registerBtn"/>
+        android:text="@string/register" />
+
     <TextView
+        android:id="@+id/loginUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/already_a_user_log_in"
         android:layout_marginTop="10dp"
-        android:id="@+id/loginUser"/>
+        android:text="@string/already_a_user_log_in" />
 
 </LinearLayout>

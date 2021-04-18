@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private Button registerBtn;
     private Button loginBtn;
     private ImageView iconImage;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         registerBtn = findViewById(R.id.registerBtn);
         loginBtn = findViewById(R.id.loginBtn);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,5 +51,15 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(firebaseAuth.getCurrentUser() != null){
+            startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
+            finish();
+        }
     }
 }

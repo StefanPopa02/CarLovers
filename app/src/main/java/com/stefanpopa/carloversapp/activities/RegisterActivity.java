@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.stefanpopa.carloversapp.R;
+import com.stefanpopa.carloversapp.util.UserApi;
 
 import java.util.HashMap;
 
@@ -113,8 +114,13 @@ public class RegisterActivity extends AppCompatActivity {
                                     firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
+                                            if (task.isSuccessful()) {
                                                 Toast.makeText(RegisterActivity.this, "Registration succesfully!", Toast.LENGTH_SHORT).show();
+
+                                                UserApi userApi = UserApi.getInstance();
+                                                userApi.setUserId(firebaseAuth.getCurrentUser().getUid());
+                                                userApi.setUsername(usernameText);
+
                                                 Intent intent = new Intent(RegisterActivity.this, WelcomeActivity.class);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 startActivity(intent);

@@ -8,4 +8,6 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="already_a_user_log_in">Already a user? Log In</string>
+    <string name="Dont_have_an_account">Don\'t have an account? Register!</string>
+    <string name="img_contentDesc">Imagine</string>
 </resources>
