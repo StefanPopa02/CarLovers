@@ -10,4 +10,10 @@
     <string name="already_a_user_log_in">Already a user? Log In</string>
     <string name="Dont_have_an_account">Don\'t have an account? Register!</string>
     <string name="img_contentDesc">Imagine</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="news_fragment">News_Fragment</string>
+    <string name="clubs_fragment">Clubs_Fragment</string>
+    <string name="meetings_fragment">Meetings_Fragment</string>
+    <string name="profile_fragment">Profile_fragment</string>
 </resources>

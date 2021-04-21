@@ -102,6 +102,8 @@ public class RegisterActivity extends AppCompatActivity {
                     map.put("email", emailText);
                     map.put("username", usernameText);
                     map.put("id", firebaseAuth.getCurrentUser().getUid());
+                    map.put("bio", "");
+                    map.put("imageurl", "default");
 
                     // Add a new document with a generated ID
                     db.collection("users")
