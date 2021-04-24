@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.UserHandle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
@@ -36,6 +37,8 @@ import com.stefanpopa.carloversapp.util.UserApi;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -47,6 +50,7 @@ public class PostActivity extends AppCompatActivity {
     private SocialAutoCompleteTextView description;
     private FirebaseFirestore db;
     private CollectionReference mRef;
+    private CollectionReference hashTagsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,7 @@ public class PostActivity extends AppCompatActivity {
         description = findViewById(R.id.description);
         db = FirebaseFirestore.getInstance();
         mRef = db.collection("Posts");
+        hashTagsRef = db.collection("HashTags");
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,13 +105,24 @@ public class PostActivity extends AppCompatActivity {
                     imageUrl = downloadUri.toString();
 
                     //TODO: Continue with Storing to database the URL post
-                    UserApi user = UserApi.getInstance();
-                    Post post = new Post(imageUrl, FirebaseAuth.getInstance().getUid(), description.getText().toString(), user.getUsername(),
+                    Post post = new Post(imageUrl, FirebaseAuth.getInstance().getUid(), description.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),
                             new Timestamp(new Date()));
                     mRef.add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             pd.dismiss();
+                            //Matching hashtags cu postId
+                            List<String> hashTags = description.getHashtags();
+                            if (!hashTags.isEmpty()) {
+                                String postId = documentReference.getId();
+                                HashMap<String, Object> map = new HashMap<>();
+                                for (String tag : hashTags) {
+                                    map.put("tag", tag.toLowerCase());
+                                    map.put("postId", postId);
+                                    hashTagsRef.document(tag.toLowerCase()).collection("hashTagPosts").document(postId).set(map);
+                                }
+                            }
+
                             startActivity(new Intent(PostActivity.this, WelcomeActivity.class));
                             finish();
                         }
