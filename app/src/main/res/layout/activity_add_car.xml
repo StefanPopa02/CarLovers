@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context=".activities.AddCarActivity">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:src="@drawable/carlovers_logo_big"
+        android:contentDescription="@string/img_contentDesc"/>
+
+    <TextView
+        android:layout_below="@+id/logo"
+        android:id="@+id/brand_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:text="Brand"
+        android:textColor="@color/custom_color2"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinner_brand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/brand_info"
+        android:layout_toEndOf="@+id/brand_info" />
+
+    <TextView
+        android:id="@+id/model_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/brand_info"
+        android:layout_margin="20dp"
+        android:text="Model"
+        android:textColor="@color/custom_color2"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinner_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/spinner_brand"
+        android:layout_alignBottom="@+id/model_info"
+        android:layout_toEndOf="@+id/model_info" />
+
+    <TextView
+        android:id="@+id/year_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/model_info"
+        android:layout_margin="20dp"
+        android:text="Year"
+        android:textColor="@color/custom_color2"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinner_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/spinner_model"
+        android:layout_alignBottom="@+id/year_info"
+        android:layout_toEndOf="@+id/model_info" />
+
+    <TextView
+        android:id="@+id/version_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/year_info"
+        android:layout_margin="20dp"
+        android:text="Version"
+        android:textColor="@color/custom_color2"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinner_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/spinner_year"
+        android:layout_alignBottom="@+id/version_info"
+        android:layout_toEndOf="@+id/model_info" />
+
+    <TextView
+        android:id="@+id/engine_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/version_info"
+        android:layout_margin="20dp"
+        android:text="Engine"
+        android:textColor="@color/custom_color2"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinner_engine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/spinner_version"
+        android:layout_alignBottom="@+id/engine_info"
+        android:layout_toEndOf="@+id/model_info" />
+
+    <Button
+        android:id="@+id/nextBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_edit_text"
+        android:text="Next"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"/>
+
+    <ImageView
+        android:id="@+id/car_image"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:cropToPadding="true"
+        android:layout_marginTop="20dp"
+        android:scaleType="fitXY"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/spinner_engine"
+        android:src="@drawable/no_car_img"/>
+
+</RelativeLayout>

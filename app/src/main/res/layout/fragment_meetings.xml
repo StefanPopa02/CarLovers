@@ -17,4 +17,5 @@
         android:text="Add post"
         android:id="@+id/add_post_btn"/>
 
+
 </FrameLayout>
