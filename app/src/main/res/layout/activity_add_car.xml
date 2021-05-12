@@ -7,21 +7,23 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="15dp"
+    android:background="@drawable/bg_main"
     tools:context=".activities.AddCarActivity">
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
-        android:src="@drawable/carlovers_logo_big"
-        android:contentDescription="@string/img_contentDesc"/>
+        android:contentDescription="@string/img_contentDesc"
+        android:src="@drawable/carlovers_logo_big" />
 
     <TextView
-        android:layout_below="@+id/logo"
         android:id="@+id/brand_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
         android:layout_margin="20dp"
+        android:fontFamily="@font/roboto_slab_bold"
         android:gravity="center"
         android:text="Brand"
         android:textColor="@color/custom_color2"
@@ -41,13 +43,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/brand_info"
         android:layout_margin="20dp"
+        android:fontFamily="@font/roboto_slab_bold"
         android:text="Model"
+
         android:textColor="@color/custom_color2"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <Spinner
-        android:id="@+id/spinner_model"
+        android:id="@+id/text_view_model"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/spinner_brand"
@@ -60,16 +64,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/model_info"
         android:layout_margin="20dp"
+        android:fontFamily="@font/roboto_slab_bold"
         android:text="Year"
         android:textColor="@color/custom_color2"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <Spinner
-        android:id="@+id/spinner_year"
+        android:id="@+id/text_view_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/spinner_model"
+        android:layout_alignEnd="@+id/text_view_model"
         android:layout_alignBottom="@+id/year_info"
         android:layout_toEndOf="@+id/model_info" />
 
@@ -79,6 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/year_info"
         android:layout_margin="20dp"
+        android:fontFamily="@font/roboto_slab_bold"
         android:text="Version"
         android:textColor="@color/custom_color2"
         android:textSize="20sp"
@@ -88,7 +94,7 @@
         android:id="@+id/spinner_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/spinner_year"
+        android:layout_alignEnd="@+id/text_view_year"
         android:layout_alignBottom="@+id/version_info"
         android:layout_toEndOf="@+id/model_info" />
 
@@ -97,7 +103,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/version_info"
-        android:layout_margin="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/roboto_slab_bold"
         android:text="Engine"
         android:textColor="@color/custom_color2"
         android:textSize="20sp"
@@ -115,20 +125,32 @@
         android:id="@+id/nextBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/selector_edit_text"
-        android:text="Next"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentBottom="true"/>
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Next" />
 
-    <ImageView
-        android:id="@+id/car_image"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view_confirm"
         android:layout_width="200dp"
         android:layout_height="150dp"
-        android:cropToPadding="true"
-        android:layout_marginTop="20dp"
-        android:scaleType="fitXY"
-        android:layout_centerInParent="true"
         android:layout_below="@+id/spinner_engine"
-        android:src="@drawable/no_car_img"/>
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:elevation="6dp"
+        app:cardCornerRadius="8dp"
+        app:cardPreventCornerOverlap="false">
+
+        <ImageView
+            android:id="@+id/car_image_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/spinner_engine"
+            android:layout_centerInParent="true"
+            android:background="@drawable/rounded_img"
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_car_img" />
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

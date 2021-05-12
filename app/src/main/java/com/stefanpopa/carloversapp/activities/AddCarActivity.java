@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -22,20 +21,16 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 import com.stefanpopa.carloversapp.R;
-import com.stefanpopa.carloversapp.adapter.BrandAdapter;
+import com.stefanpopa.carloversapp.ui.BrandAdapter;
 import com.stefanpopa.carloversapp.model.BrandItem;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class AddCarActivity extends AppCompatActivity {
 
@@ -95,10 +90,10 @@ public class AddCarActivity extends AppCompatActivity {
                 }
             }
         });
-        carImage = findViewById(R.id.car_image);
+        carImage = findViewById(R.id.car_image_confirm);
         brandSpinner = findViewById(R.id.spinner_brand);
-        modelSpinner = findViewById(R.id.spinner_model);
-        yearSpinner = findViewById(R.id.spinner_year);
+        modelSpinner = findViewById(R.id.text_view_model);
+        yearSpinner = findViewById(R.id.text_view_year);
         versionSpinner = findViewById(R.id.spinner_version);
         engineSpinner = findViewById(R.id.spinner_engine);
         db = FirebaseFirestore.getInstance();

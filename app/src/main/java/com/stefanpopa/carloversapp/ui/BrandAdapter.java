@@ -1,4 +1,4 @@
-package com.stefanpopa.carloversapp.adapter;
+package com.stefanpopa.carloversapp.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -26,17 +26,17 @@ public class BrandAdapter extends ArrayAdapter<BrandItem> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return initView(position, convertView, parent);
+        return initView(position, convertView, parent,R.layout.addcar_spinner_item_img_text);
     }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return initView(position, convertView, parent);
+        return initView(position, convertView, parent, R.layout.addcar_dropdown_item_img_text);
     }
 
-    private View initView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    private View initView(int position, @Nullable View convertView, @NonNull ViewGroup parent, int layout) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.dropdown_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(layout, parent, false);
         }
 
         ImageView imageViewLogo = convertView.findViewById(R.id.brand_image_view);
