@@ -104,7 +104,6 @@ public class PostActivity extends AppCompatActivity {
                     Uri downloadUri = task.getResult();
                     imageUrl = downloadUri.toString();
 
-                    //TODO: Continue with Storing to database the URL post
                     Post post = new Post(imageUrl, FirebaseAuth.getInstance().getUid(), description.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),
                             new Timestamp(new Date()));
                     mRef.add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

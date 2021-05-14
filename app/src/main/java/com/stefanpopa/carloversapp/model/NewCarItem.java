@@ -1,6 +1,9 @@
 package com.stefanpopa.carloversapp.model;
 
+import com.google.firebase.Timestamp;
+
 public class NewCarItem {
+    private String userId;
     private String letter;
     private String brand;
     private String model;
@@ -10,6 +13,9 @@ public class NewCarItem {
     private String caracteristici;
     private String carPhoto;
     private String brandLogo;
+    private Timestamp timeAdded;
+
+    public NewCarItem(){}
 
     public NewCarItem(String letter, String brand, String model, String year, String version, String engine, String caracteristici, String carPhoto, String brandLogo) {
         this.letter = letter;
@@ -21,6 +27,22 @@ public class NewCarItem {
         this.caracteristici = caracteristici;
         this.carPhoto = carPhoto;
         this.brandLogo = brandLogo;
+    }
+
+    public Timestamp getTimeAdded() {
+        return timeAdded;
+    }
+
+    public void setTimeAdded(Timestamp timeAdded) {
+        this.timeAdded = timeAdded;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getLetter() {
