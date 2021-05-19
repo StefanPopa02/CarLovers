@@ -118,7 +118,7 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
         engine_view = findViewById(R.id.text_view_engine);
         carPhoto_view = findViewById(R.id.car_image_confirm);
         caracteristici_view = findViewById(R.id.text_view_caracteristici);
-        //TODO: set Text to binding textviews + UI caracteristici + add personal car image
+
         brand_view.setText(brand);
         model_view.setText(model);
         year_view.setText(year);
