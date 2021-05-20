@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -22,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -30,12 +32,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.smarteist.autoimageslider.SliderView;
 import com.squareup.picasso.Picasso;
 import com.stefanpopa.carloversapp.R;
 import com.stefanpopa.carloversapp.model.NewCarItem;
 import com.stefanpopa.carloversapp.model.Post;
+import com.stefanpopa.carloversapp.model.SliderItem;
+import com.stefanpopa.carloversapp.ui.SliderAdapter;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -65,12 +72,20 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference mRef;
     private ProgressDialog pd;
-
+    private SliderView sliderView;
+    private Button addImgBtn;
+    private Button removeImgBtn;
+    private List<SliderItem> sliderItems;
+    private SliderAdapter sliderAdapter;
+    private List<SliderItem> defaultSliderItem;
+    private List<String> finalCarPhotos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_add_car);
+        sliderItems = new ArrayList<>();
+        finalCarPhotos = new ArrayList<>();
         pd = new ProgressDialog(this);
         pd.setMessage("Uploading...");
         db = FirebaseFirestore.getInstance();
@@ -78,6 +93,29 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
         back_btn = findViewById(R.id.back_to_add_car_btn);
         close_btn = findViewById(R.id.close_confirm_activity_btn);
         confirm_btn = findViewById(R.id.confirm_add_car_btn);
+        addImgBtn = findViewById(R.id.add_image_btn);
+        removeImgBtn = findViewById(R.id.remove_image_btn);
+
+        addImgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.activity().start(ConfirmAddCarActivity.this);
+            }
+        });
+        removeImgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sliderItems.size() > 1) {
+                    sliderAdapter.deleteItem(sliderView.getCurrentPagePosition());
+                    sliderItems = sliderAdapter.getItems();
+                } else if (sliderItems.size() == 1) {
+                    sliderItems = new ArrayList<>();
+                    sliderAdapter.renewItems(defaultSliderItem);
+                }
+            }
+
+        });
+
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,8 +139,9 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
         engine = getIntent().getStringExtra("Engine");
         caracteristici = getIntent().getStringExtra("Caracteristici");
         carPhoto = getIntent().getStringExtra("CarPhoto");
+        finalCarPhotos.add(carPhoto);
         brandLogo = getIntent().getStringExtra("BrandLogo");
-        NewCarItem newCarItem = new NewCarItem(letter, brand, model, year, version, engine, caracteristici, carPhoto, brandLogo);
+        NewCarItem newCarItem = new NewCarItem(letter, brand, model, year, version, engine, caracteristici, finalCarPhotos, brandLogo);
         confirm_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +155,7 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
         year_view = findViewById(R.id.text_view_year);
         version_view = findViewById(R.id.text_view_version);
         engine_view = findViewById(R.id.text_view_engine);
-        carPhoto_view = findViewById(R.id.car_image_confirm);
+        //carPhoto_view = findViewById(R.id.car_image_confirm);
         caracteristici_view = findViewById(R.id.text_view_caracteristici);
 
         brand_view.setText(brand);
@@ -125,58 +164,68 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
         version_view.setText(version);
         engine_view.setText(engine);
         caracteristici_view.setText(caracteristici);
-        Picasso.get().load(carPhoto).resize(500, 375).into(carPhoto_view);
-        carPhoto_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CropImage.activity().start(ConfirmAddCarActivity.this);
-            }
-        });
+
+        sliderView = findViewById(R.id.imageSlider);
+        sliderAdapter = new SliderAdapter(this);
+        SliderItem sliderItem = new SliderItem();
+        sliderItem.setImageUrl(carPhoto);
+        defaultSliderItem = new ArrayList<>();
+        defaultSliderItem.add(sliderItem);
+        sliderAdapter.renewItems(defaultSliderItem);
+        sliderView.setSliderAdapter(sliderAdapter);
+
+//        Picasso.get().load(carPhoto).resize(500, 375).into(carPhoto_view);
+//        carPhoto_view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                CropImage.activity().start(ConfirmAddCarActivity.this);
+//            }
+//        });
 
     }
 
     private void uploadUserData(NewCarItem newCarItem) {
         pd.show();
-        if (imageUri != null) {
-            StorageReference filePath = FirebaseStorage.getInstance().getReference("UserCars").child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
-            StorageTask uploadTask = filePath.putFile(imageUri);
-            uploadTask.continueWithTask(new Continuation() {
+        if (sliderItems.size() > 0) {
+            List<Task<Uri>> taskArrayList = new ArrayList<>();
+            for (SliderItem sliderItem : sliderItems) {
+                taskArrayList.add(uploadImageTask(sliderItem.getImageUri()));
+            }
+            Tasks.whenAllSuccess(taskArrayList).addOnCompleteListener(new OnCompleteListener<List<Object>>() {
                 @Override
-                public Object then(@NonNull Task task) throws Exception {
-                    if (!task.isSuccessful()) {
-                        throw task.getException();
+                public void onComplete(@NonNull Task<List<Object>> task) {
+                    if (task.isSuccessful()) {
+                        finalCarPhotos = new ArrayList<>();
+                        List<Object> resultList = task.getResult();
+                        for (Object resultUri : resultList) {
+                            Uri downloadUri = (Uri) resultUri;
+                            finalCarPhotos.add(downloadUri.toString());
+                            Log.d("CONFIRM_ADD_CAR", "DownUri: " + downloadUri);
+                        }
+                        newCarItem.setCarPhoto(finalCarPhotos);
+                        newCarItem.setUserId(FirebaseAuth.getInstance().getUid());
+                        newCarItem.setTimeAdded(new Timestamp(new Date()));
+                        mRef.add(newCarItem).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                pd.dismiss();
+                                startActivity(new Intent(ConfirmAddCarActivity.this, WelcomeActivity.class));
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                pd.dismiss();
+                                Toast.makeText(ConfirmAddCarActivity.this, "Failed to post " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
-                    return filePath.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    Uri downloadUri = task.getResult();
-                    newCarItem.setCarPhoto(downloadUri.toString());
-                    newCarItem.setUserId(FirebaseAuth.getInstance().getUid());
-                    newCarItem.setTimeAdded(new Timestamp(new Date()));
-
-                    mRef.add(newCarItem).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            pd.dismiss();
-
-                            startActivity(new Intent(ConfirmAddCarActivity.this, WelcomeActivity.class));
-                            finish();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(ConfirmAddCarActivity.this, "Failed to post " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     pd.dismiss();
-                    Toast.makeText(ConfirmAddCarActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ConfirmAddCarActivity.this, "Failed to post " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -187,7 +236,6 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
                     pd.dismiss();
-
                     startActivity(new Intent(ConfirmAddCarActivity.this, WelcomeActivity.class));
                     finish();
                 }
@@ -201,6 +249,14 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
         }
     }
 
+    private Task<Uri> uploadImageTask(Uri imageUri) {
+        StorageReference filePath = FirebaseStorage.getInstance().getReference("UserCars").child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+        StorageTask uploadTask = filePath.putFile(imageUri);
+        return uploadTask.continueWithTask(task -> {
+            return filePath.getDownloadUrl();
+        });
+    }
+
     private String getFileExtension(Uri imageUri) {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(this.getContentResolver().getType(imageUri));
     }
@@ -212,8 +268,9 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             imageUri = result.getUri();
+            sliderItems.add(0, new SliderItem(imageUri));
+            sliderAdapter.renewItems(sliderItems);
 
-            carPhoto_view.setImageURI(imageUri);
         } else {
             Toast.makeText(this, "Something bad happened, Try Again!", Toast.LENGTH_SHORT).show();
         }

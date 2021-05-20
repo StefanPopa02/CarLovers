@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0-alpha02'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.joooonho:selectableroundedimageview:1.0.1'
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
 
     implementation "com.hendraanggrian.appcompat:socialview:0.2"
     implementation "com.hendraanggrian.appcompat:socialview-commons:0.2"

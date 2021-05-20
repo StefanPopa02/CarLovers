@@ -44,15 +44,56 @@
             app:cardCornerRadius="8dp"
             app:cardPreventCornerOverlap="false">
 
-            <ImageView
-                android:id="@+id/car_image_confirm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:background="@drawable/rounded_img"
-                android:scaleType="centerCrop"
-                android:src="@drawable/no_car_img" />
+            <com.smarteist.autoimageslider.SliderView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/imageSlider"
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                app:sliderAnimationDuration="600"
+                app:sliderAutoCycleDirection="back_and_forth"
+                app:sliderAutoCycleEnabled="true"
+                app:sliderIndicatorAnimationDuration="600"
+                app:sliderIndicatorGravity="center_horizontal|bottom"
+                app:sliderIndicatorMargin="15dp"
+                app:sliderIndicatorOrientation="horizontal"
+                app:sliderIndicatorPadding="3dp"
+                app:sliderIndicatorRadius="2dp"
+                android:background="@drawable/no_car_img"
+                app:sliderIndicatorSelectedColor="#5A5A5A"
+                app:sliderIndicatorUnselectedColor="#FFF"
+                app:sliderScrollTimeInSec="1" />
+<!--            <ImageView-->
+<!--                android:id="@+id/car_image_confirm"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:background="@drawable/rounded_img"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/no_car_img" />-->
         </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/add_image_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/icon_add_img2"
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginBottom="50dp"
+            android:layout_alignBottom="@+id/card_view_confirm"
+            android:layout_toRightOf="@+id/card_view_confirm"/>
+
+        <Button
+            android:id="@+id/remove_image_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/icon_remove_img2"
+            android:gravity="center"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="50dp"
+            android:layout_alignBottom="@+id/card_view_confirm"
+            android:layout_toLeftOf="@+id/card_view_confirm"/>
+
 
         <TextView
             android:id="@+id/text_view_caracteristici"

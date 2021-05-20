@@ -2,6 +2,8 @@ package com.stefanpopa.carloversapp.model;
 
 import com.google.firebase.Timestamp;
 
+import java.util.List;
+
 public class NewCarItem {
     private String userId;
     private String letter;
@@ -11,13 +13,13 @@ public class NewCarItem {
     private String version;
     private String engine;
     private String caracteristici;
-    private String carPhoto;
+    private List<String> carPhoto;
     private String brandLogo;
     private Timestamp timeAdded;
 
     public NewCarItem(){}
 
-    public NewCarItem(String letter, String brand, String model, String year, String version, String engine, String caracteristici, String carPhoto, String brandLogo) {
+    public NewCarItem(String letter, String brand, String model, String year, String version, String engine, String caracteristici, List<String> carPhoto, String brandLogo) {
         this.letter = letter;
         this.brand = brand;
         this.model = model;
@@ -101,11 +103,11 @@ public class NewCarItem {
         this.caracteristici = caracteristici;
     }
 
-    public String getCarPhoto() {
+    public List<String> getCarPhoto() {
         return carPhoto;
     }
 
-    public void setCarPhoto(String carPhoto) {
+    public void setCarPhoto(List<String> carPhoto) {
         this.carPhoto = carPhoto;
     }
 
