@@ -1,7 +1,6 @@
 package com.stefanpopa.carloversapp.ui;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,17 +16,17 @@ import com.stefanpopa.carloversapp.model.SliderItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SliderAdapter extends
-        SliderViewAdapter<SliderAdapter.SliderAdapterVH> {
+public class SliderAdapterProfile extends
+        SliderViewAdapter<SliderAdapterProfile.SliderAdapterProfileVH> {
 
     private Context context;
-    private List<SliderItem> mSliderItems = new ArrayList<>();
+    private List<String> mSliderItems = new ArrayList<>();
 
-    public SliderAdapter(Context context) {
+    public SliderAdapterProfile(Context context) {
         this.context = context;
     }
 
-    public void renewItems(List<SliderItem> sliderItems) {
+    public void renewItems(List<String> sliderItems) {
         this.mSliderItems = sliderItems;
         notifyDataSetChanged();
     }
@@ -37,28 +36,29 @@ public class SliderAdapter extends
         notifyDataSetChanged();
     }
 
-    public void addItem(SliderItem sliderItem) {
+    public void addItem(String sliderItem) {
         this.mSliderItems.add(sliderItem);
         notifyDataSetChanged();
     }
 
     @Override
-    public SliderAdapterVH onCreateViewHolder(ViewGroup parent) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_slider_image, null);
-        return new SliderAdapterVH(inflate);
+    public SliderAdapterProfileVH onCreateViewHolder(ViewGroup parent) {
+        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_slider_image_profile, null);
+        return new SliderAdapterProfileVH(inflate);
     }
 
     @Override
-    public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
+    public void onBindViewHolder(SliderAdapterProfileVH viewHolder, final int position) {
 
-        SliderItem sliderItem = mSliderItems.get(position);
+        String sliderItem = mSliderItems.get(position);
 
-        if (sliderItem.getImageUri() != null) {
-            Picasso.get().load(sliderItem.getImageUri()).placeholder(R.drawable.no_car_img).resize(600, 450).into(viewHolder.imageViewBackground);
-        }else{
-            Picasso.get().load(sliderItem.getImageUrl()).placeholder(R.drawable.no_car_img).resize(600, 450).into(viewHolder.imageViewBackground);
+        if (sliderItem != null) {
+            Picasso.get().load(sliderItem)
+                    .resize(1920, 1440)
+                    .onlyScaleDown()
+                    .placeholder(R.drawable.no_car_img).into(viewHolder.imageViewBackground);
         }
-        Log.d("SLIDER_ADAPTER", "URL LA IMG:" + sliderItem.getImageUrl());
+        Log.d("SLIDER_ADAPTER_PROFILE", "URL LA IMG:" + sliderItem);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,18 +74,18 @@ public class SliderAdapter extends
         return mSliderItems.size();
     }
 
-    public List<SliderItem> getItems() {
+    public List<String> getItems() {
         return mSliderItems;
     }
 
-    class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
+    class SliderAdapterProfileVH extends SliderViewAdapter.ViewHolder {
 
         View itemView;
         ImageView imageViewBackground;
 
-        public SliderAdapterVH(View itemView) {
+        public SliderAdapterProfileVH(View itemView) {
             super(itemView);
-            imageViewBackground = itemView.findViewById(R.id.car_image_confirm);
+            imageViewBackground = itemView.findViewById(R.id.car_image_profile);
             this.itemView = itemView;
         }
     }

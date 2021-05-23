@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CarLoversApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ConfirmAddCarActivity"></activity>
+        <activity android:name=".activities.EditProfileActivity"></activity>
+        <activity android:name=".activities.OptionsActivity" />
+        <activity android:name=".activities.ConfirmAddCarActivity" />
         <activity android:name=".activities.AddCarActivity" />
         <activity android:name=".activities.PostActivity" />
         <activity android:name=".activities.WelcomeActivity" />

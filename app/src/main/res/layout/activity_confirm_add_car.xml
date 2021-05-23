@@ -29,8 +29,7 @@
             android:layout_height="20dp"
             android:layout_alignParentStart="true"
             android:layout_margin="5dp"
-            android:background="@drawable/ic_back"
-             />
+            android:background="@drawable/ic_back" />
 
 
         <androidx.cardview.widget.CardView
@@ -44,11 +43,11 @@
             app:cardCornerRadius="8dp"
             app:cardPreventCornerOverlap="false">
 
-            <com.smarteist.autoimageslider.SliderView
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            <com.smarteist.autoimageslider.SliderView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/imageSlider"
                 android:layout_width="200dp"
                 android:layout_height="150dp"
+                android:background="@drawable/no_car_img"
                 app:sliderAnimationDuration="600"
                 app:sliderAutoCycleDirection="back_and_forth"
                 app:sliderAutoCycleEnabled="true"
@@ -58,41 +57,33 @@
                 app:sliderIndicatorOrientation="horizontal"
                 app:sliderIndicatorPadding="3dp"
                 app:sliderIndicatorRadius="2dp"
-                android:background="@drawable/no_car_img"
                 app:sliderIndicatorSelectedColor="#5A5A5A"
                 app:sliderIndicatorUnselectedColor="#FFF"
                 app:sliderScrollTimeInSec="1" />
-<!--            <ImageView-->
-<!--                android:id="@+id/car_image_confirm"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerInParent="true"-->
-<!--                android:background="@drawable/rounded_img"-->
-<!--                android:scaleType="centerCrop"-->
-<!--                android:src="@drawable/no_car_img" />-->
+
         </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/add_image_btn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/icon_add_img2"
-            android:gravity="center"
-            android:layout_marginLeft="30dp"
-            android:layout_marginBottom="50dp"
-            android:layout_alignBottom="@+id/card_view_confirm"
-            android:layout_toRightOf="@+id/card_view_confirm"/>
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/close_confirm_activity_btn"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_toStartOf="@+id/close_confirm_activity_btn"
+            android:background="@drawable/ic_add"
+            android:backgroundTint="@color/custom_color2" />
 
         <Button
             android:id="@+id/remove_image_btn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/icon_remove_img2"
-            android:gravity="center"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="50dp"
-            android:layout_alignBottom="@+id/card_view_confirm"
-            android:layout_toLeftOf="@+id/card_view_confirm"/>
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/back_to_add_car_btn"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="20dp"
+            android:layout_toEndOf="@+id/back_to_add_car_btn"
+            android:background="@drawable/ic_remove"
+            android:backgroundTint="@color/custom_color2" />
 
 
         <TextView
@@ -131,9 +122,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/brand_info"
+            android:layout_alignParentEnd="true"
             android:layout_marginLeft="30dp"
             android:layout_toRightOf="@id/version_info"
             android:fontFamily="@font/roboto"
+            android:gravity="end"
+            android:paddingEnd="15dp"
             android:text="testbrand"
             android:textColor="@color/custom_color5"
             android:textSize="18sp"
@@ -157,7 +151,10 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/text_view_brand"
             android:layout_alignBottom="@+id/model_info"
+            android:layout_alignParentEnd="true"
             android:fontFamily="@font/roboto"
+            android:gravity="end"
+            android:paddingEnd="15dp"
             android:text="testmodel"
             android:textColor="@color/custom_color5"
             android:textSize="18sp"
@@ -181,7 +178,10 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/text_view_model"
             android:layout_alignBottom="@+id/year_info"
+            android:layout_alignParentEnd="true"
             android:fontFamily="@font/roboto"
+            android:gravity="end"
+            android:paddingEnd="15dp"
             android:text="yearTest"
             android:textColor="@color/custom_color5"
             android:textSize="18sp"
@@ -205,7 +205,10 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/text_view_year"
             android:layout_alignBottom="@+id/version_info"
+            android:layout_alignParentEnd="true"
             android:fontFamily="@font/roboto"
+            android:gravity="end"
+            android:paddingEnd="15dp"
             android:text="versionTest"
             android:textColor="@color/custom_color5"
             android:textSize="18sp"
@@ -232,7 +235,10 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/text_view_version"
             android:layout_alignBottom="@+id/engine_info"
+            android:layout_alignParentEnd="true"
             android:fontFamily="@font/roboto"
+            android:gravity="end"
+            android:paddingEnd="15dp"
             android:text="engineTest"
             android:textColor="@color/custom_color5"
             android:textSize="18sp"
@@ -247,8 +253,6 @@
             android:background="@drawable/selector_edit_text"
             android:fontFamily="@font/roboto_slab_bold"
             android:text="Confirm" />
-
-
 
 
     </RelativeLayout>

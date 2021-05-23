@@ -8,8 +8,7 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/brand_image_view"
@@ -28,6 +27,7 @@
             android:layout_toEndOf="@+id/brand_image_view"
             android:fontFamily="@font/roboto"
             android:gravity="center"
+            android:maxLines="1"
             android:text="Abarth"
             android:textColor="@color/custom_color1"
             android:textSize="18sp" />

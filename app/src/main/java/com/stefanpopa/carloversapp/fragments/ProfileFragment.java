@@ -3,30 +3,76 @@ package com.stefanpopa.carloversapp.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.smarteist.autoimageslider.SliderView;
+import com.squareup.picasso.Picasso;
 import com.stefanpopa.carloversapp.R;
 import com.stefanpopa.carloversapp.activities.AddCarActivity;
+import com.stefanpopa.carloversapp.activities.OptionsActivity;
+import com.stefanpopa.carloversapp.model.BrandItem;
+import com.stefanpopa.carloversapp.model.NewCarItem;
+import com.stefanpopa.carloversapp.model.UserProfile;
+import com.stefanpopa.carloversapp.ui.BrandAdapter;
+import com.stefanpopa.carloversapp.ui.SliderAdapterProfile;
+import com.stefanpopa.carloversapp.util.CallbackMethod;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.security.cert.PKIXRevocationChecker;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private Button addCarBtn;
+    private TextView profileUsername;
+    private ImageView profileOptions;
+    private CircleImageView profileImage;
+    private TextView profileFullName;
+    private TextView profileBiography;
+    private Button profileFollowingBtn;
+    private Spinner profileSpinnerCars;
+    private SliderView profileCarImageSlider;
+    private TextView profileCarBrand;
+    private TextView profileCarModel;
+    private TextView profileCarYear;
+    private TextView profileCarVersion;
+    private TextView profileCarEngine;
+    private FirebaseUser firebaseUser;
+    private FirebaseFirestore db;
+    private String profileId;
+    private UserProfile userProfile;
+    private List<NewCarItem> userCars;
+    private SliderAdapterProfile sliderAdapterProfile;
 
-    // TODO: Rename and change types of parameters
+
     private String mParam1;
     private String mParam2;
 
@@ -34,15 +80,6 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ProfileFragment newInstance(String param1, String param2) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
@@ -66,7 +103,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        addCarBtn = view.findViewById(R.id.add_car_btn);
+        addCarBtn = view.findViewById(R.id.profile_add_car_btn);
         addCarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +111,140 @@ public class ProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        profileUsername = view.findViewById(R.id.profile_username);
+        profileOptions = view.findViewById(R.id.profile_options);
+        profileImage = view.findViewById(R.id.profile_image);
+        profileFullName = view.findViewById(R.id.profile_fullname);
+        profileBiography = view.findViewById(R.id.profile_biography);
+        profileFollowingBtn = view.findViewById(R.id.profile_following_clubs_btn);
+        profileSpinnerCars = view.findViewById(R.id.profile_spinner_owned_cars);
+        profileCarImageSlider = view.findViewById(R.id.profile_car_image_slider);
+        profileCarBrand = view.findViewById(R.id.profile_text_view_brand);
+        profileCarModel = view.findViewById(R.id.profile_text_view_model);
+        profileCarYear = view.findViewById(R.id.profile_text_view_year);
+        profileCarVersion = view.findViewById(R.id.profile_text_view_version);
+        profileCarEngine = view.findViewById(R.id.profile_text_view_engine);
+
+        db = FirebaseFirestore.getInstance();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        profileId = firebaseUser.getUid();
+        getUserInfo();
+        getUserCars(new CallbackMethod() {
+            @Override
+            public void getResult(List<NewCarItem> userCars) {
+                //Log.d("PROFILE_FRAGMENT", "AM PRIMIT ASYNC: "+userCars.toString());
+                if (userCars.size() > 0) {
+                    setSpinnerCarsAdapter(userCars);
+                }
+            }
+        });
+
+        profileOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), OptionsActivity.class));
+            }
+        });
+
+
         return view;
     }
+
+    private void setSpinnerCarsAdapter(List<NewCarItem> userCars) {
+
+        List<BrandItem> brandItems = new ArrayList<>();
+        Map<BrandItem, NewCarItem> carItemMap = new HashMap<>();
+        for (NewCarItem carItem : userCars) {
+            BrandItem brandItem = new BrandItem(carItem.getBrand() + " " + carItem.getModel(), carItem.getBrandLogo());
+            brandItems.add(brandItem);
+            carItemMap.put(brandItem, carItem);
+        }
+
+        //TODO: Spinner set-up
+        BrandAdapter carsSpinnerAdapter = new BrandAdapter(getContext(), (ArrayList<BrandItem>) brandItems);
+        profileSpinnerCars.setAdapter(carsSpinnerAdapter);
+        profileSpinnerCars.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                BrandItem brandItem = (BrandItem) parent.getItemAtPosition(position);
+                NewCarItem carInfo = carItemMap.get(brandItem);
+                List<String> carPhotos = carInfo.getCarPhoto();
+                setSliderCarsAdapter(carPhotos);
+                setCarInfo(carInfo);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
+
+    private void setCarInfo(NewCarItem carInfo) {
+        profileCarBrand.setText(carInfo.getBrand());
+        profileCarModel.setText(carInfo.getModel());
+        profileCarVersion.setText(carInfo.getVersion());
+        profileCarYear.setText(carInfo.getYear());
+        profileCarEngine.setText(carInfo.getEngine());
+    }
+
+    private void setSliderCarsAdapter(List<String> carPhotos) {
+        sliderAdapterProfile = new SliderAdapterProfile(getContext());
+        sliderAdapterProfile.renewItems(carPhotos);
+        profileCarImageSlider.setSliderAdapter(sliderAdapterProfile);
+    }
+
+    private void getUserCars(CallbackMethod callbackMethod) {
+        db.collection("UserCars").whereEqualTo("userId", profileId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    userCars = new ArrayList<>();
+                    List<DocumentSnapshot> documentsResult = task.getResult().getDocuments();
+                    for (DocumentSnapshot doc : documentsResult) {
+                        userCars.add(doc.toObject(NewCarItem.class));
+                    }
+                    for (NewCarItem carItem : userCars) {
+                        Collections.reverse(carItem.getCarPhoto());
+                        //Log.d("PROFILE_FRAGMENT", carItem.toString());
+                    }
+                    callbackMethod.getResult(userCars);
+                } else {
+                    Toast.makeText(getContext(), "No user matching UID ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getUserInfo() {
+        db.collection("users").whereEqualTo("id", profileId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<DocumentSnapshot> documentsResult = task.getResult().getDocuments();
+                    DocumentSnapshot doc = documentsResult.get(0);
+                    userProfile = doc.toObject(UserProfile.class);
+                    Log.d("PROFILE_FRAGMENT", userProfile.toString());
+                    profileUsername.setText(userProfile.getUsername());
+                    profileBiography.setText(userProfile.getBio());
+                    profileFullName.setText(userProfile.getFirstName() + " " + userProfile.getLastName());
+                    Picasso.get().load(userProfile.getImageurl()).placeholder(R.drawable.ic_profile).into(profileImage);
+                } else {
+                    Toast.makeText(getContext(), "No user matching UID", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

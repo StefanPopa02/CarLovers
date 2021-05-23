@@ -55,6 +55,7 @@ public class AddCarActivity extends AppCompatActivity {
     private String caracteristiciFinal;
     private String engineFinal;
     private Button nextBtn;
+    private Button closeBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,14 @@ public class AddCarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_car);
         pd = new ProgressDialog(this);
         pd.setMessage("Please Wait");
+        closeBtn = findViewById(R.id.close_add_car_activity_btn);
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AddCarActivity.this, WelcomeActivity.class));
+                finish();
+            }
+        });
         nextBtn = findViewById(R.id.nextBtn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,8 +92,6 @@ public class AddCarActivity extends AppCompatActivity {
                     i.putExtra("CarPhoto", carImageUrlFinal);
                     i.putExtra("BrandLogo", carLogoUrlFinal);
                     startActivity(i);
-                    finish();
-
                 } else {
                     Toast.makeText(AddCarActivity.this, "Check all fields!", Toast.LENGTH_SHORT).show();
                 }

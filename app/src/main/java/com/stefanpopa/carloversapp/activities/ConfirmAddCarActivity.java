@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ import com.stefanpopa.carloversapp.model.Post;
 import com.stefanpopa.carloversapp.model.SliderItem;
 import com.stefanpopa.carloversapp.ui.SliderAdapter;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -99,7 +101,7 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
         addImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CropImage.activity().start(ConfirmAddCarActivity.this);
+                CropImage.activity().setFixAspectRatio(true).setAspectRatio(4,3).setMinCropResultSize(128, 96).setMaxCropResultSize(8192, 6144).start(ConfirmAddCarActivity.this);
             }
         });
         removeImgBtn.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +157,6 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
         year_view = findViewById(R.id.text_view_year);
         version_view = findViewById(R.id.text_view_version);
         engine_view = findViewById(R.id.text_view_engine);
-        //carPhoto_view = findViewById(R.id.car_image_confirm);
         caracteristici_view = findViewById(R.id.text_view_caracteristici);
 
         brand_view.setText(brand);
@@ -173,15 +174,6 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
         defaultSliderItem.add(sliderItem);
         sliderAdapter.renewItems(defaultSliderItem);
         sliderView.setSliderAdapter(sliderAdapter);
-
-//        Picasso.get().load(carPhoto).resize(500, 375).into(carPhoto_view);
-//        carPhoto_view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                CropImage.activity().start(ConfirmAddCarActivity.this);
-//            }
-//        });
-
     }
 
     private void uploadUserData(NewCarItem newCarItem) {

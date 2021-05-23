@@ -5,16 +5,359 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/profile_fragment" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add car"
-        android:id="@+id/add_car_btn"/>
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/windowBackground">
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/windowBackground">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/profile_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_slab_bold"
+                        android:maxLines="1"
+                        android:text="username"
+                        android:textColor="@color/custom_color2"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/profile_options"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/ic_options" />
+
+                </RelativeLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/bar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="6dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardPreventCornerOverlap="false">
+
+                    <LinearLayout
+                        android:id="@+id/user_bio_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="15dp">
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/profile_image"
+                                android:layout_width="96dp"
+                                android:layout_height="96dp"
+                                android:layout_gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_profile"
+                                app:civ_border_color="@color/custom_color2"
+                                app:civ_border_width="2dp" />
+
+                            <TextView
+                                android:id="@+id/profile_fullname"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/roboto_regular"
+                                android:maxLines="1"
+                                android:paddingTop="10dp"
+                                android:text="Popa Stefan-Dorin"
+                                android:textColor="@color/custom_color1"
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:paddingStart="25dp"
+                            android:paddingEnd="15dp">
+
+                            <TextView
+                                android:id="@+id/profile_biography"
+                                android:layout_width="match_parent"
+                                android:layout_height="96dp"
+                                android:fontFamily="@font/roboto"
+                                android:gravity="center"
+                                android:text="My very long Biography.My very long Biography.My very long Biography.My very long Biography. "
+                                android:textColor="@color/custom_color4"
+                                android:textSize="16sp"
+                                android:textStyle="italic" />
+
+                            <Button
+                                android:id="@+id/profile_following_clubs_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/selector_edit_text"
+                                android:fontFamily="@font/roboto_slab_bold"
+                                android:text="Following clubs" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:id="@+id/user_cars_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/owned_cars_txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_slab_bold"
+                            android:gravity="center_vertical"
+                            android:text="CARS:"
+                            android:textSize="18sp" />
+
+                        <Spinner
+                            android:id="@+id/profile_spinner_owned_cars"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignEnd="@+id/profile_add_car_btn"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="35dp"
+                            android:layout_toRightOf="@+id/owned_cars_txt" />
+
+                        <Button
+                            android:layout_marginTop="7dp"
+                            android:id="@+id/profile_add_car_btn"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentEnd="true"
+                            android:background="@drawable/ic_add_box"
+                            android:gravity="center_vertical" />
+                    </RelativeLayout>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_view_preview_car_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="250dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="15dp"
+                        android:elevation="6dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardPreventCornerOverlap="false">
+
+                        <com.smarteist.autoimageslider.SliderView xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:id="@+id/profile_car_image_slider"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/no_car_img"
+                            app:sliderAnimationDuration="600"
+                            app:sliderAutoCycleDirection="back_and_forth"
+                            app:sliderAutoCycleEnabled="true"
+                            app:sliderIndicatorAnimationDuration="600"
+                            app:sliderIndicatorGravity="center_horizontal|bottom"
+                            app:sliderIndicatorMargin="15dp"
+                            app:sliderIndicatorOrientation="horizontal"
+                            app:sliderIndicatorPadding="3dp"
+                            app:sliderIndicatorRadius="2dp"
+                            app:sliderIndicatorSelectedColor="#5A5A5A"
+                            app:sliderIndicatorUnselectedColor="#FFF"
+                            app:sliderScrollTimeInSec="1" />
+                    </androidx.cardview.widget.CardView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/brand_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/text_view_caracteristici"
+                            android:layout_margin="20dp"
+                            android:fontFamily="@font/roboto_slab_bold"
+                            android:gravity="center"
+                            android:text="Brand"
+                            android:textColor="@color/custom_color2"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/profile_text_view_brand"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/brand_info"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginLeft="30dp"
+                            android:layout_toRightOf="@id/version_info"
+                            android:fontFamily="@font/roboto"
+                            android:gravity="end"
+                            android:paddingEnd="15dp"
+                            android:text="testbrand"
+                            android:textColor="@color/custom_color5"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/model_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/brand_info"
+                            android:layout_margin="20dp"
+                            android:fontFamily="@font/roboto_slab_bold"
+                            android:text="Model"
+                            android:textColor="@color/custom_color2"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/profile_text_view_model"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@+id/profile_text_view_brand"
+                            android:layout_alignBottom="@+id/model_info"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/roboto"
+                            android:gravity="end"
+                            android:paddingEnd="15dp"
+                            android:text="testmodel"
+                            android:textColor="@color/custom_color5"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/year_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/model_info"
+                            android:layout_margin="20dp"
+                            android:fontFamily="@font/roboto_slab_bold"
+                            android:text="Year"
+                            android:textColor="@color/custom_color2"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/profile_text_view_year"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@+id/profile_text_view_model"
+                            android:layout_alignBottom="@+id/year_info"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/roboto"
+                            android:gravity="end"
+                            android:paddingEnd="15dp"
+                            android:text="yearTest"
+                            android:textColor="@color/custom_color5"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/version_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/year_info"
+                            android:layout_margin="20dp"
+                            android:fontFamily="@font/roboto_slab_bold"
+                            android:text="Version"
+                            android:textColor="@color/custom_color2"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/profile_text_view_version"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@+id/profile_text_view_year"
+                            android:layout_alignBottom="@+id/version_info"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/roboto"
+                            android:gravity="end"
+                            android:paddingEnd="15dp"
+                            android:text="versionTest"
+                            android:textColor="@color/custom_color5"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/engine_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/version_info"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:fontFamily="@font/roboto_slab_bold"
+                            android:text="Engine"
+                            android:textColor="@color/custom_color2"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/profile_text_view_engine"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@+id/profile_text_view_version"
+                            android:layout_alignBottom="@+id/engine_info"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/roboto"
+                            android:gravity="end"
+                            android:paddingEnd="15dp"
+                            android:text="engineTest"
+                            android:textColor="@color/custom_color5"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
 </FrameLayout>

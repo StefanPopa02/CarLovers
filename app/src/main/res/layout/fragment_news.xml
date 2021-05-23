@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.NewsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -15,19 +14,18 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/fab"
-            android:tint="@color/custom_color4"
-            app:backgroundTint="@color/custom_color2"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_margin="16dp"
             android:src="@drawable/ic_filter"
-            />
+            android:tint="@color/custom_color4"
+            app:backgroundTint="@color/custom_color2" />
 
     </RelativeLayout>
 
