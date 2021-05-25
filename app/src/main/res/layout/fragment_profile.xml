@@ -152,10 +152,10 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_marginTop="5dp"
                             android:id="@+id/owned_cars_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
                             android:fontFamily="@font/roboto_slab_bold"
                             android:gravity="center_vertical"
                             android:text="CARS:"
@@ -172,11 +172,11 @@
                             android:layout_toRightOf="@+id/owned_cars_txt" />
 
                         <Button
-                            android:layout_marginTop="7dp"
                             android:id="@+id/profile_add_car_btn"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_alignParentEnd="true"
+                            android:layout_marginTop="7dp"
                             android:background="@drawable/ic_add_box"
                             android:gravity="center_vertical" />
                     </RelativeLayout>

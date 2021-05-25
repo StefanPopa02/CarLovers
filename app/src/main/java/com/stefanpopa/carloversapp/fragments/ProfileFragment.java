@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -30,6 +29,7 @@ import com.smarteist.autoimageslider.SliderView;
 import com.squareup.picasso.Picasso;
 import com.stefanpopa.carloversapp.R;
 import com.stefanpopa.carloversapp.activities.AddCarActivity;
+import com.stefanpopa.carloversapp.activities.FollowingClubsActivity;
 import com.stefanpopa.carloversapp.activities.OptionsActivity;
 import com.stefanpopa.carloversapp.model.BrandItem;
 import com.stefanpopa.carloversapp.model.NewCarItem;
@@ -37,8 +37,8 @@ import com.stefanpopa.carloversapp.model.UserProfile;
 import com.stefanpopa.carloversapp.ui.BrandAdapter;
 import com.stefanpopa.carloversapp.ui.SliderAdapterProfile;
 import com.stefanpopa.carloversapp.util.CallbackMethod;
+import com.stefanpopa.carloversapp.util.UserApi;
 
-import java.security.cert.PKIXRevocationChecker;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -103,6 +103,10 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        //TODO: Check if profileId not already set for another user
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        profileId = firebaseUser.getUid();
+
         addCarBtn = view.findViewById(R.id.profile_add_car_btn);
         addCarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +121,14 @@ public class ProfileFragment extends Fragment {
         profileFullName = view.findViewById(R.id.profile_fullname);
         profileBiography = view.findViewById(R.id.profile_biography);
         profileFollowingBtn = view.findViewById(R.id.profile_following_clubs_btn);
+        profileFollowingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), FollowingClubsActivity.class);
+                intent.putExtra("profileId", profileId);
+                startActivity(intent);
+            }
+        });
         profileSpinnerCars = view.findViewById(R.id.profile_spinner_owned_cars);
         profileCarImageSlider = view.findViewById(R.id.profile_car_image_slider);
         profileCarBrand = view.findViewById(R.id.profile_text_view_brand);
@@ -126,12 +138,11 @@ public class ProfileFragment extends Fragment {
         profileCarEngine = view.findViewById(R.id.profile_text_view_engine);
 
         db = FirebaseFirestore.getInstance();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        profileId = firebaseUser.getUid();
+
         getUserInfo();
         getUserCars(new CallbackMethod() {
             @Override
-            public void getResult(List<NewCarItem> userCars) {
+            public void getResultData(List<NewCarItem> userCars) {
                 //Log.d("PROFILE_FRAGMENT", "AM PRIMIT ASYNC: "+userCars.toString());
                 if (userCars.size() > 0) {
                     setSpinnerCarsAdapter(userCars);
@@ -160,7 +171,6 @@ public class ProfileFragment extends Fragment {
             carItemMap.put(brandItem, carItem);
         }
 
-        //TODO: Spinner set-up
         BrandAdapter carsSpinnerAdapter = new BrandAdapter(getContext(), (ArrayList<BrandItem>) brandItems);
         profileSpinnerCars.setAdapter(carsSpinnerAdapter);
         profileSpinnerCars.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -209,7 +219,7 @@ public class ProfileFragment extends Fragment {
                         Collections.reverse(carItem.getCarPhoto());
                         //Log.d("PROFILE_FRAGMENT", carItem.toString());
                     }
-                    callbackMethod.getResult(userCars);
+                    callbackMethod.getResultData(userCars);
                 } else {
                     Toast.makeText(getContext(), "No user matching UID ", Toast.LENGTH_SHORT).show();
                 }
@@ -230,6 +240,10 @@ public class ProfileFragment extends Fragment {
                     List<DocumentSnapshot> documentsResult = task.getResult().getDocuments();
                     DocumentSnapshot doc = documentsResult.get(0);
                     userProfile = doc.toObject(UserProfile.class);
+                    userProfile.setDocId(doc.getId());
+                    if(profileId.equals(firebaseUser.getUid())){
+                        UserApi.getInstance().setUserProfile(userProfile);
+                    }
                     Log.d("PROFILE_FRAGMENT", userProfile.toString());
                     profileUsername.setText(userProfile.getUsername());
                     profileBiography.setText(userProfile.getBio());

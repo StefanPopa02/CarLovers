@@ -28,9 +28,9 @@ import com.google.firebase.storage.StorageTask;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 import com.stefanpopa.carloversapp.R;
-import com.stefanpopa.carloversapp.model.NewCarItem;
 import com.stefanpopa.carloversapp.model.UserProfile;
 import com.stefanpopa.carloversapp.util.CallbackMethod;
+import com.stefanpopa.carloversapp.util.UserApi;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -75,7 +75,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         getUserInfo(new CallbackMethod() {
             @Override
-            public void getUserProfile(UserProfile userProfile) {
+            public void getUserProfileData(UserProfile userProfile) {
                 firstName.setText(userProfile.getFirstName());
                 lastName.setText(userProfile.getLastName());
                 bio.setText(userProfile.getBio());
@@ -132,7 +132,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 getUserInfo(new CallbackMethod() {
                                     @Override
-                                    public void getUserProfile(UserProfile userProfile) {
+                                    public void getUserProfileData(UserProfile userProfile) {
                                         firstName.setText(userProfile.getFirstName());
                                         lastName.setText(userProfile.getLastName());
                                         bio.setText(userProfile.getBio());
@@ -167,7 +167,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         getUserInfo(new CallbackMethod() {
                             @Override
-                            public void getUserProfile(UserProfile userProfile) {
+                            public void getUserProfileData(UserProfile userProfile) {
                                 firstName.setText(userProfile.getFirstName());
                                 lastName.setText(userProfile.getLastName());
                                 bio.setText(userProfile.getBio());
@@ -196,8 +196,10 @@ public class EditProfileActivity extends AppCompatActivity {
                     DocumentSnapshot doc = documentsResult.get(0);
                     userDocId = doc.getId();
                     userProfile = doc.toObject(UserProfile.class);
+                    userProfile.setDocId(userDocId);
+                    UserApi.getInstance().setUserProfile(userProfile);
                     Log.d("PROFILE_FRAGMENT", userProfile.toString());
-                    callbackMethod.getUserProfile(userProfile);
+                    callbackMethod.getUserProfileData(userProfile);
                 } else {
                     Toast.makeText(EditProfileActivity.this, "No user matching UID", Toast.LENGTH_SHORT).show();
                 }

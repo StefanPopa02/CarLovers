@@ -54,9 +54,12 @@ public class SliderAdapterProfile extends
 
         if (sliderItem != null) {
             Picasso.get().load(sliderItem)
-                    .resize(1920, 1440)
-                    .onlyScaleDown()
-                    .placeholder(R.drawable.no_car_img).into(viewHolder.imageViewBackground);
+                    .resize(1920,1440)
+                    //.onlyScaleDown()
+                    //.fit()
+                    //.centerCrop()
+                    .placeholder(R.drawable.no_car_img)
+                    .into(viewHolder.imageViewBackground);
         }
         Log.d("SLIDER_ADAPTER_PROFILE", "URL LA IMG:" + sliderItem);
 

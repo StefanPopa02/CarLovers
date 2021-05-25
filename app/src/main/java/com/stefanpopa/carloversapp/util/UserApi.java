@@ -11,11 +11,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.stefanpopa.carloversapp.model.UserProfile;
 
 public class UserApi extends Application {
     private String username;
     private String userId;
     private static UserApi instance;
+    private UserProfile userProfile;
 
     public UserApi() {
     }
@@ -54,6 +56,14 @@ public class UserApi extends Application {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
     public String getUserId() {

@@ -27,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.stefanpopa.carloversapp.R;
 import com.stefanpopa.carloversapp.util.UserApi;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -104,6 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
                     map.put("id", firebaseAuth.getCurrentUser().getUid());
                     map.put("bio", "");
                     map.put("imageurl", "default");
+                    map.put("followingClubs", Arrays.asList());
 
                     // Add a new document with a generated ID
                     db.collection("users")
@@ -111,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
-                                    Log.d("FireStore", "DocumentSnapshot added with ID: " + documentReference.getId());
+                                    Log.d("Firestore", "DocumentSnapshot added with ID: " + documentReference.getId());
                                     pd.dismiss();
                                     firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

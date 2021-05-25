@@ -1,5 +1,7 @@
 package com.stefanpopa.carloversapp.model;
 
+import java.util.List;
+
 public class UserProfile {
     private String bio;
     private String email;
@@ -8,8 +10,26 @@ public class UserProfile {
     private String imageurl;
     private String lastName;
     private String username;
+    private List<Integer> followingClubs;
+    private String docId;
 
     public UserProfile() {
+    }
+
+    public List<Integer> getFollowingClubs() {
+        return followingClubs;
+    }
+
+    public void setFollowingClubs(List<Integer> followingClubs) {
+        this.followingClubs = followingClubs;
+    }
+
+    public String getDocId() {
+        return docId;
+    }
+
+    public void setDocId(String docId) {
+        this.docId = docId;
     }
 
     public String getBio() {
@@ -78,6 +98,7 @@ public class UserProfile {
                 ", imageurl='" + imageurl + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
+                ", followingClubs=" + followingClubs +
                 '}';
     }
 }
