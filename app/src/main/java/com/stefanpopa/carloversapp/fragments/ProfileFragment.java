@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +31,9 @@ import com.squareup.picasso.Picasso;
 import com.stefanpopa.carloversapp.R;
 import com.stefanpopa.carloversapp.activities.AddCarActivity;
 import com.stefanpopa.carloversapp.activities.FollowingClubsActivity;
+import com.stefanpopa.carloversapp.activities.MainActivity;
 import com.stefanpopa.carloversapp.activities.OptionsActivity;
+import com.stefanpopa.carloversapp.activities.WelcomeActivity;
 import com.stefanpopa.carloversapp.model.BrandItem;
 import com.stefanpopa.carloversapp.model.NewCarItem;
 import com.stefanpopa.carloversapp.model.UserProfile;
@@ -71,6 +74,7 @@ public class ProfileFragment extends Fragment {
     private UserProfile userProfile;
     private List<NewCarItem> userCars;
     private SliderAdapterProfile sliderAdapterProfile;
+    private boolean guest = false;
 
 
     private String mParam1;
@@ -78,6 +82,16 @@ public class ProfileFragment extends Fragment {
 
     public ProfileFragment() {
         // Required empty public constructor
+    }
+
+    public ProfileFragment(String profileId) {
+        this.profileId = profileId;
+        if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(profileId)) {
+            guest = false;
+        } else {
+            guest = true;
+        }
+
     }
 
     public static ProfileFragment newInstance(String param1, String param2) {
@@ -99,15 +113,27 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((WelcomeActivity) getActivity()).bottomNavigationView.getMenu().getItem(3).setChecked(true);
+        Log.d("PROFILE_FRAGMENT", "onResume called: ");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         //TODO: Check if profileId not already set for another user
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        profileId = firebaseUser.getUid();
+        if (profileId == null) {
+            profileId = firebaseUser.getUid();
+        }
 
         addCarBtn = view.findViewById(R.id.profile_add_car_btn);
+        if (guest) {
+            addCarBtn.setVisibility(View.GONE);
+        }
         addCarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +141,7 @@ public class ProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
-        profileUsername = view.findViewById(R.id.profile_username);
+        profileUsername = view.findViewById(R.id.club_page_fullname);
         profileOptions = view.findViewById(R.id.profile_options);
         profileImage = view.findViewById(R.id.profile_image);
         profileFullName = view.findViewById(R.id.profile_fullname);
@@ -124,9 +150,9 @@ public class ProfileFragment extends Fragment {
         profileFollowingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), FollowingClubsActivity.class);
-                intent.putExtra("profileId", profileId);
-                startActivity(intent);
+
+                ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_left, R.anim.enter_from_right, R.anim.exit_to_right)
+                        .replace(R.id.fragment_container, new ProfileFollowingFragment(userProfile), "PROFILE_FOLLOWING_FRAGMENT").addToBackStack(null).commit();
             }
         });
         profileSpinnerCars = view.findViewById(R.id.profile_spinner_owned_cars);
@@ -154,6 +180,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), OptionsActivity.class));
+                getActivity().overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_left);
             }
         });
 
@@ -241,7 +268,7 @@ public class ProfileFragment extends Fragment {
                     DocumentSnapshot doc = documentsResult.get(0);
                     userProfile = doc.toObject(UserProfile.class);
                     userProfile.setDocId(doc.getId());
-                    if(profileId.equals(firebaseUser.getUid())){
+                    if (profileId.equals(firebaseUser.getUid())) {
                         UserApi.getInstance().setUserProfile(userProfile);
                     }
                     Log.d("PROFILE_FRAGMENT", userProfile.toString());

@@ -6,7 +6,7 @@
         android:title=""/>
 
     <item android:id="@+id/clubs_home"
-        android:icon="@drawable/ic_groups"
+        android:icon="@drawable/ic_car"
         android:title=""/>
 
     <item android:id="@+id/meetings_home"

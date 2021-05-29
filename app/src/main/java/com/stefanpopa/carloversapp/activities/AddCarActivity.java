@@ -82,7 +82,7 @@ public class AddCarActivity extends AppCompatActivity {
                             carLogoUrlFinal + " \n engine " + engineFinal + " \n Caracteristici " + caracteristiciFinal);
 
                     Intent i = new Intent(AddCarActivity.this, ConfirmAddCarActivity.class);
-                    i.putExtra("Letter",letterFinal);
+                    i.putExtra("Letter", letterFinal);
                     i.putExtra("Brand", clickedBrandNameFinal);
                     i.putExtra("Model", clickedModelNameFinal);
                     i.putExtra("Year", clickedYearNameFinal);
@@ -200,7 +200,11 @@ public class AddCarActivity extends AppCompatActivity {
                             years.add((String) obj);
                         }
                     }
-                    years.sort((year1, year2) -> Integer.valueOf(year1.substring(0, 4)).compareTo(Integer.valueOf(year2.substring(0, 4))));
+                    try {
+                        years.sort((year1, year2) -> Integer.valueOf(year1.substring(0, 4)).compareTo(Integer.valueOf(year2.substring(0, 4))));
+                    } catch (NumberFormatException e) {
+                        Log.d("ADD_CAR_ACTIVITY", " NUMBER FORMAT EXCEPTION");
+                    }
                     setYearSpinnerAdapter(letter, clickedBrandName, clickedModelName, years);
                 }
             }

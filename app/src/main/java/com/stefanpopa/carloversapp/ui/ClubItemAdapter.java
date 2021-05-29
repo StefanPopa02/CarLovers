@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -16,6 +17,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.stefanpopa.carloversapp.R;
+import com.stefanpopa.carloversapp.fragments.ClubPageFragment;
 import com.stefanpopa.carloversapp.model.ClubItem;
 import com.stefanpopa.carloversapp.model.UserProfile;
 import com.stefanpopa.carloversapp.util.UserApi;
@@ -64,9 +66,34 @@ public class ClubItemAdapter extends RecyclerView.Adapter<ClubItemAdapter.ViewHo
 
         //Log.d("CLUB_ITEM_ADAPTER", "userProfile in adapter: " + userProfile.toString());
         ClubItem clubItem = clubItems.get(position);
+
         holder.clubModel.setText(clubItem.getModel());
         holder.clubBrand.setText(clubItem.getBrand());
         Picasso.get().load(clubItem.getLogoImgUrl()).into(holder.clubProfilePic);
+
+        holder.clubModel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_left, R.anim.enter_from_right, R.anim.exit_to_right)
+                        .replace(R.id.fragment_container, new ClubPageFragment(clubItem, userProfile), "CLUBS_PAGE_FRAGMENT").addToBackStack(null).commit();
+            }
+        });
+
+        holder.clubBrand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_left, R.anim.enter_from_right, R.anim.exit_to_right)
+                        .replace(R.id.fragment_container, new ClubPageFragment(clubItem, userProfile), "CLUBS_PAGE_FRAGMENT").addToBackStack(null).commit();
+            }
+        });
+
+        holder.clubProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_left, R.anim.enter_from_right, R.anim.exit_to_right)
+                        .replace(R.id.fragment_container, new ClubPageFragment(clubItem, userProfile), "CLUBS_PAGE_FRAGMENT").addToBackStack(null).commit();
+            }
+        });
 
         holder.clubFollowBtn.setVisibility(View.VISIBLE);
 
@@ -90,7 +117,9 @@ public class ClubItemAdapter extends RecyclerView.Adapter<ClubItemAdapter.ViewHo
             }
         });
 
+
     }
+
 
     @Override
     public int getItemCount() {

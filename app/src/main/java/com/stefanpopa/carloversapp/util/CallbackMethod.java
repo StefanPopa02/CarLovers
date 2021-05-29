@@ -18,4 +18,8 @@ public interface CallbackMethod {
     default void getCarClubItemsData(List<ClubItem> clubItems) {
 
     }
+
+    default void getSelectedCarClubItem(ClubItem clubItem) {
+
+    }
 }

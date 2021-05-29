@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,13 @@ public class MeetingsFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((WelcomeActivity)getActivity()).bottomNavigationView.getMenu().getItem(2).setChecked(true);
+        Log.d("PROFILE_FRAGMENT", "onResume called: ");
     }
 
     @Override

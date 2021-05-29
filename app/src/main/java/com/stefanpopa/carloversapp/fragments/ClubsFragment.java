@@ -28,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import com.stefanpopa.carloversapp.R;
+import com.stefanpopa.carloversapp.activities.WelcomeActivity;
 import com.stefanpopa.carloversapp.model.ClubItem;
 import com.stefanpopa.carloversapp.model.UserProfile;
 import com.stefanpopa.carloversapp.ui.ClubItemAdapter;
@@ -73,6 +74,13 @@ public class ClubsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((WelcomeActivity)getActivity()).bottomNavigationView.getMenu().getItem(1).setChecked(true);
+        Log.d("CLUBS_FRAGMENT", "onResume called: ");
     }
 
     @Override

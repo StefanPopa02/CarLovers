@@ -57,6 +57,12 @@ public class EditProfileActivity extends AppCompatActivity {
     private ProgressDialog pd;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
@@ -87,8 +93,11 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
             }
         });
+
+
 
         changePhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override

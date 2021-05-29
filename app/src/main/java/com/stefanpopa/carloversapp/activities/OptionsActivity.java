@@ -20,6 +20,12 @@ public class OptionsActivity extends AppCompatActivity {
     private TextView signOut;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
@@ -35,6 +41,7 @@ public class OptionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
             }
         });
 
@@ -44,6 +51,7 @@ public class OptionsActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(OptionsActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 finish();
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_left);
             }
         });
 
@@ -51,8 +59,11 @@ public class OptionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(OptionsActivity.this, EditProfileActivity.class));
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_left);
             }
         });
+
+
 
 
     }

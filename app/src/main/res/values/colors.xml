@@ -12,4 +12,9 @@
     <color name="custom_color3">#E9C46A</color>
     <color name="custom_color4">#F4A261</color>
     <color name="custom_color5">#E76F51</color>
+    <color name="colorPrimary">#455cde</color>
+    <color name="colorPrimaryDark">#000d3d</color>
+    <color name="colorAccent">#c2bdbf</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#ffffff</color>
 </resources>

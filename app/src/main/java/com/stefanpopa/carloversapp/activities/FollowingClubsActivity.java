@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,12 +39,20 @@ public class FollowingClubsActivity extends AppCompatActivity {
     private ClubItemAdapter clubItemAdapter;
     private UserProfile userProfile;
     private FirebaseFirestore db;
+    private ImageView close;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_following_clubs);
 
+        close = findViewById(R.id.following_close);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         db = FirebaseFirestore.getInstance();
         profileId = getIntent().getStringExtra("profileId");
         recyclerView = findViewById(R.id.following_clubs_recycler_view);
@@ -59,7 +69,7 @@ public class FollowingClubsActivity extends AppCompatActivity {
                     DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                     userProfile = doc.toObject(UserProfile.class);
                     clubItemAdapter.renewUserProfile(userProfile);
-                    Log.d("FOLLOWING_CLUBS_ACTIVITY", "USER :" +userProfile.toString());
+                    Log.d("FOLLOWING_CLUBS_ACTIVITY", "USER :" + userProfile.toString());
                     getCarClubItems(new CallbackMethod() {
                         @Override
                         public void getCarClubItemsData(List<ClubItem> clubItemsData) {

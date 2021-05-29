@@ -28,7 +28,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/profile_username"
+                        android:id="@+id/club_page_fullname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_slab_bold"

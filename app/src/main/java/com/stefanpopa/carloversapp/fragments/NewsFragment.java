@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.stefanpopa.carloversapp.R;
+import com.stefanpopa.carloversapp.activities.WelcomeActivity;
 import com.stefanpopa.carloversapp.controller.SimpleXMLParser;
 import com.stefanpopa.carloversapp.model.Entry;
 import com.stefanpopa.carloversapp.model.RssLink;
@@ -101,6 +102,13 @@ public class NewsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((WelcomeActivity)getActivity()).bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        Log.d("PROFILE_FRAGMENT", "onResume called: ");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -174,7 +182,7 @@ public class NewsFragment extends Fragment {
                             e.printStackTrace();
                         }
                         List<Entry> finalEntryList1 = entryList;
-                        if(getActivity() == null){
+                        if (getActivity() == null) {
                             return;
                         }
                         getActivity().runOnUiThread(new Runnable() {
@@ -200,6 +208,7 @@ public class NewsFragment extends Fragment {
                 parsedXml += entry.toString() + "\n";
             }
             feedRecyclerAdapter = new FeedRecyclerAdapter(getContext(), finalEntryList);
+            feedRecyclerAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
             recyclerView.setAdapter(feedRecyclerAdapter);
             feedRecyclerAdapter.notifyDataSetChanged();
             Log.d("RSS_TOTAL_DATA", parsedXml);
