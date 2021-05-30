@@ -106,6 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
                     map.put("bio", "");
                     map.put("imageurl", "default");
                     map.put("followingClubs", Arrays.asList());
+                    map.put("userType", "user");
 
                     // Add a new document with a generated ID
                     db.collection("users")

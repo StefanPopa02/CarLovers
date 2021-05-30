@@ -12,8 +12,17 @@ public class UserProfile {
     private String username;
     private List<Integer> followingClubs;
     private String docId;
+    private String userType;
 
     public UserProfile() {
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public List<Integer> getFollowingClubs() {
@@ -99,6 +108,8 @@ public class UserProfile {
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", followingClubs=" + followingClubs +
+                ", docId='" + docId + '\'' +
+                ", userType='" + userType + '\'' +
                 '}';
     }
 }

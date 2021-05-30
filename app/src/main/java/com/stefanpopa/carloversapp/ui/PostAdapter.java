@@ -4,14 +4,19 @@ import android.content.Context;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +36,7 @@ import com.hendraanggrian.appcompat.widget.SocialTextView;
 import com.smarteist.autoimageslider.SliderView;
 import com.squareup.picasso.Picasso;
 import com.stefanpopa.carloversapp.R;
+import com.stefanpopa.carloversapp.activities.WelcomeActivity;
 import com.stefanpopa.carloversapp.fragments.ClubPageFragment;
 import com.stefanpopa.carloversapp.fragments.PostDetailsFragment;
 import com.stefanpopa.carloversapp.fragments.ProfileFragment;
@@ -81,6 +87,36 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post post = posts.get(position);
+
+        if (isPostDetail) {
+            holder.postMore.setVisibility(View.GONE);
+        } else {
+            holder.postMore.setVisibility(View.VISIBLE);
+            holder.postMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("POST_ADAPTER", "POPUP clicked");
+                    Toast.makeText(context, "Popup clicked", Toast.LENGTH_SHORT).show();
+                    PopupMenu popupMenu = new PopupMenu(context, holder.postMore);
+                    popupMenu.inflate(R.menu.more_menu);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.menu_delete:
+                                    deletePost(post);
+                                    return true;
+                                default:
+                                    return false;
+                            }
+
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
+        }
+
         if (post.getImageUrl() != null) {
             holder.sliderView.setSliderAdapter(new SliderPostAdapter(context, post));
         } else {
@@ -152,8 +188,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.postComments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //FrameLayout frameLayout = ((WelcomeActivity) context).findViewById(R.id.fragment_container);
+                    //frameLayout.removeAllViews();
                     ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_left, R.anim.enter_from_right, R.anim.exit_to_right)
-                            .replace(R.id.fragment_container, new PostDetailsFragment(post), "CLUBS_POST_DETAIL_FRAGMENT")
+                            .add(R.id.fragment_container, new PostDetailsFragment(post), "CLUBS_POST_DETAIL_FRAGMENT")
                             .addToBackStack(null)
                             .commit();
                 }
@@ -164,12 +202,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_left, R.anim.enter_from_right, R.anim.exit_to_right)
-                            .replace(R.id.fragment_container, new PostDetailsFragment(post), "CLUBS_POST_DETAIL_FRAGMENT")
+                            .add(R.id.fragment_container, new PostDetailsFragment(post), "CLUBS_POST_DETAIL_FRAGMENT")
                             .addToBackStack(null)
                             .commit();
                 }
             });
         }
+
+    }
+
+    private void deletePost(Post post) {
+        FirebaseFirestore.getInstance().collection("Posts").document(post.getPostDocId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    posts.remove(post);
+                    notifyDataSetChanged();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void getClubItem(int clubId, CallbackMethod callbackMethod) {

@@ -95,25 +95,28 @@ public class ProfileFollowingFragment extends Fragment {
     private void getCarClubItems(CallbackMethod callbackMethod) {
         List<Integer> followingClubs = userProfile.getFollowingClubs();
         Log.d("PROFILE_FOLLOWING_FRAGMENT", "User profile: " + userProfile);
-        db.collection("carClubItems").whereIn("id", followingClubs).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    List<ClubItem> clubItems = new ArrayList<>();
-                    QuerySnapshot querySnapshot = task.getResult();
-                    List<DocumentSnapshot> docs = querySnapshot.getDocuments();
-                    for (DocumentSnapshot doc : docs) {
-                        clubItems.add(doc.toObject(ClubItem.class));
+        if(followingClubs.size()>0) {
+            db.collection("carClubItems").whereIn("id", followingClubs).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        List<ClubItem> clubItems = new ArrayList<>();
+                        QuerySnapshot querySnapshot = task.getResult();
+                        List<DocumentSnapshot> docs = querySnapshot.getDocuments();
+                        for (DocumentSnapshot doc : docs) {
+                            clubItems.add(doc.toObject(ClubItem.class));
+                        }
+                        callbackMethod.getCarClubItemsData(clubItems);
                     }
-                    callbackMethod.getCarClubItemsData(clubItems);
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            callbackMethod.getCarClubItemsData(new ArrayList<>());
+        }
     }
 }

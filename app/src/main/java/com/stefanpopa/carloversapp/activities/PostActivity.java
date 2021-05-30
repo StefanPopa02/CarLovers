@@ -65,17 +65,19 @@ public class PostActivity extends AppCompatActivity {
     private List<String> sliderItems;
     private ImageView addImgBtn;
     private ImageView removeImgBtn;
+    private String currentDocName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+        currentDocName = getIntent().getStringExtra("currentPage");
         close = findViewById(R.id.close);
         //imageAdded = findViewById(R.id.imageAdded);
         post = findViewById(R.id.post);
         description = findViewById(R.id.description);
         db = FirebaseFirestore.getInstance();
-        mRef = db.collection("Posts");
+        mRef = db.collection(currentDocName);
         hashTagsRef = db.collection("HashTags");
         sliderItems = new ArrayList<>();
         sliderView = findViewById(R.id.imageAdded);

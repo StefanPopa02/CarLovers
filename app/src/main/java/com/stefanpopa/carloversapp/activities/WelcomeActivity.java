@@ -36,7 +36,7 @@ public class WelcomeActivity extends AppCompatActivity {
         fragmentsOrder.put("CLUBS_POST_DETAIL_FRAGMENT", 2.2f);
         fragmentsOrder.put("MEETINGS_FRAGMENT", 3.0f);
         fragmentsOrder.put("PROFILE_FRAGMENT", 4.0f);
-        fragmentsOrder.put("PROFILE_FOLLOWING_FRAGMENT",4.1f);
+        fragmentsOrder.put("PROFILE_FOLLOWING_FRAGMENT", 4.1f);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -64,12 +64,16 @@ public class WelcomeActivity extends AppCompatActivity {
 
 
                 if (selectorFragment != null) {
-                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                    if (fragmentsOrder.get(currentFragment.getTag()) > fragmentsOrder.get(TAG)) {
-                        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_left, R.anim.exit_to_left).addToBackStack(null).replace(R.id.fragment_container, selectorFragment, TAG).commit();
-                    } else if (fragmentsOrder.get(currentFragment.getTag()) < fragmentsOrder.get(TAG)) {
-                        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_left, R.anim.enter_from_right, R.anim.exit_to_right).addToBackStack(null).replace(R.id.fragment_container, selectorFragment, TAG).commit();
-                    } else {
+                    try {
+                        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                        if (fragmentsOrder.get(currentFragment.getTag()) > fragmentsOrder.get(TAG)) {
+                            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_left, R.anim.exit_to_left).addToBackStack(null).replace(R.id.fragment_container, selectorFragment, TAG).commit();
+                        } else if (fragmentsOrder.get(currentFragment.getTag()) < fragmentsOrder.get(TAG)) {
+                            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_left, R.anim.enter_from_right, R.anim.exit_to_right).addToBackStack(null).replace(R.id.fragment_container, selectorFragment, TAG).commit();
+                        } else {
+                            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, selectorFragment, TAG).commit();
+                        }
+                    }catch (NullPointerException e){
                         getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, selectorFragment, TAG).commit();
                     }
                 }
@@ -95,7 +99,8 @@ public class WelcomeActivity extends AppCompatActivity {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStackImmediate();
         } else {
-            finish();
+            super.onBackPressed();
+            //finish();
         }
     }
 }
