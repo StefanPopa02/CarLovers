@@ -70,6 +70,13 @@
                 android:src="@drawable/ic_add_box"
                 android:layout_alignParentEnd="true"/>
 
+            <ImageView
+                android:id="@+id/activity_post_add_video_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_video"
+                android:layout_centerHorizontal="true"/>
+
             <com.smarteist.autoimageslider.SliderView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/imageAdded"
                 android:layout_below="@id/activity_edit_add_btn"

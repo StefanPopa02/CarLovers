@@ -117,7 +117,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             });
         }
 
-        if (post.getImageUrl() != null) {
+        if (post.getImageUrl() != null || post.getVideosUrl() != null) {
             holder.sliderView.setSliderAdapter(new SliderPostAdapter(context, post));
         } else {
             holder.sliderView.setVisibility(View.GONE);

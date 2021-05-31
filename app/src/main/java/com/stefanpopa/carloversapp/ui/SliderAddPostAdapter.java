@@ -25,41 +25,34 @@ import com.stefanpopa.carloversapp.model.Post;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SliderPostAdapter extends SliderViewAdapter<SliderPostAdapter.SliderPostAdapterViewHolder> {
+public class SliderAddPostAdapter extends SliderViewAdapter<SliderAddPostAdapter.SliderPostAdapterViewHolder> {
 
     private Context context;
-    private List<String> imageUrl;
-    private Post currentPost;
-    private List<String> videosUrl;
     private List<MediaObject> media;
 
-    public SliderPostAdapter(Context context, Post post) {
-        this.context = context;
-        this.currentPost = post;
-        imageUrl = post.getImageUrl();
-        videosUrl = post.getVideosUrl();
-        media = new ArrayList<>();
-        if (videosUrl != null) {
-            for (String str : videosUrl) {
-                MediaObject video = new MediaObject();
-                video.setVideoUrl(str);
-                media.add(video);
-            }
-        }
-        if (imageUrl != null) {
-            for (String str : imageUrl) {
-                MediaObject image = new MediaObject();
-                image.setImgUrl(str);
-                media.add(image);
-            }
-        }
-        Log.d("SLIDER_POST_ADAPTER", "MEDIA CONTINE: " + media.toString());
+    public void deleteItem(int position){
+        this.media.remove(position);
+        notifyDataSetChanged();
     }
+
+    public void renewItems(List<MediaObject> media){
+        this.media = media;
+        notifyDataSetChanged();
+    }
+
+    public List<MediaObject> getItems(){
+        return this.media;
+    }
+
+    public SliderAddPostAdapter(Context context) {
+        this.context = context;
+        this.media = new ArrayList<>();
+        }
 
     @Override
     public SliderPostAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_slider_image_post, null);
-        return new SliderPostAdapter.SliderPostAdapterViewHolder(inflate);
+        return new SliderAddPostAdapter.SliderPostAdapterViewHolder(inflate);
     }
 
     @Override
@@ -98,18 +91,6 @@ public class SliderPostAdapter extends SliderViewAdapter<SliderPostAdapter.Slide
                 }
             }
         }
-
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_left, R.anim.enter_from_right, R.anim.exit_to_right)
-                        .replace(R.id.fragment_container, new PostDetailsFragment(currentPost), "CLUBS_POST_DETAIL_FRAGMENT")
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
-
     }
 
     @Override
@@ -131,3 +112,4 @@ public class SliderPostAdapter extends SliderViewAdapter<SliderPostAdapter.Slide
         }
     }
 }
+

@@ -8,6 +8,7 @@ import java.util.List;
 public class Post {
     private String postDocId;
     private List<String> imageUrl;
+    private List<String> videosUrl;
     private int clubId;
     private int no_of_likes;
     private String clubFullname;
@@ -22,6 +23,14 @@ public class Post {
 
     public Post() {
 
+    }
+
+    public List<String> getVideosUrl() {
+        return videosUrl;
+    }
+
+    public void setVideosUrl(List<String> videosUrl) {
+        this.videosUrl = videosUrl;
     }
 
     public Post(List<String> imageUrl, int clubId, int no_of_likes, String clubFullname, String userId, String userFullname, String description, String username, Timestamp timeAdded) {

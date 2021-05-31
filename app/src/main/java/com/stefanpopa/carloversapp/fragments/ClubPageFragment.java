@@ -283,6 +283,8 @@ public class ClubPageFragment extends Fragment {
                             return o1.getTimeAdded().compareTo(o2.getTimeAdded());
                         }
                     });
+                    List<String> videosUrl = new ArrayList<>();
+                    videosUrl.add("https://firebasestorage.googleapis.com/v0/b/carloversapp-16ea7.appspot.com/o/Videos%2Fb6.mp4?alt=media&token=b601ba4e-871c-4732-893b-790cc9834719");
                     postAdapter.renewPosts(postsData);
                 }
             }
