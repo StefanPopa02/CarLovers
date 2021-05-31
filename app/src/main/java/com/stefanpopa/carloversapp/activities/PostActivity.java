@@ -8,36 +8,29 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.UserHandle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import com.smarteist.autoimageslider.SliderView;
-import com.squareup.picasso.Picasso;
 import com.stefanpopa.carloversapp.R;
 import com.stefanpopa.carloversapp.model.ClubItem;
 import com.stefanpopa.carloversapp.model.Post;
-import com.stefanpopa.carloversapp.model.SliderItem;
 import com.stefanpopa.carloversapp.model.UserProfile;
 import com.stefanpopa.carloversapp.ui.SliderAdapterProfile;
 import com.stefanpopa.carloversapp.util.FirebaseData;
@@ -83,7 +76,7 @@ public class PostActivity extends AppCompatActivity {
         sliderView = findViewById(R.id.imageAdded);
         setSliderViewAdapter();
 
-        addImgBtn = findViewById(R.id.activity_post_add_btn);
+        addImgBtn = findViewById(R.id.activity_edit_add_btn);
         addImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

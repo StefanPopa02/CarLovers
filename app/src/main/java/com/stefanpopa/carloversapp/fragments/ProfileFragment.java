@@ -124,7 +124,6 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        //TODO: Check if profileId not already set for another user
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (profileId == null) {
             profileId = firebaseUser.getUid();
@@ -205,6 +204,7 @@ public class ProfileFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 BrandItem brandItem = (BrandItem) parent.getItemAtPosition(position);
                 NewCarItem carInfo = carItemMap.get(brandItem);
+                UserApi.getInstance().setCurrentEditCar(carInfo);
                 List<String> carPhotos = carInfo.getCarPhoto();
                 setSliderCarsAdapter(carPhotos);
                 setCarInfo(carInfo);
@@ -228,6 +228,10 @@ public class ProfileFragment extends Fragment {
 
     private void setSliderCarsAdapter(List<String> carPhotos) {
         sliderAdapterProfile = new SliderAdapterProfile(getContext());
+        if (!guest) {
+            sliderAdapterProfile.setUserProfile(true);
+        }
+
         sliderAdapterProfile.renewItems(carPhotos);
         profileCarImageSlider.setSliderAdapter(sliderAdapterProfile);
     }
@@ -241,6 +245,7 @@ public class ProfileFragment extends Fragment {
                     List<DocumentSnapshot> documentsResult = task.getResult().getDocuments();
                     for (DocumentSnapshot doc : documentsResult) {
                         userCars.add(doc.toObject(NewCarItem.class));
+                        userCars.get(userCars.size()-1).setDocId(doc.getId());
                     }
                     for (NewCarItem carItem : userCars) {
                         Collections.reverse(carItem.getCarPhoto());

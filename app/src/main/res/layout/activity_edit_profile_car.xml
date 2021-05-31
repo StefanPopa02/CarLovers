@@ -31,12 +31,12 @@
                     android:src="@drawable/ic_close" />
 
                 <TextView
-                    android:id="@+id/post"
+                    android:id="@+id/edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="15dp"
-                    android:text="POST"
+                    android:text="EDIT"
                     android:textColor="@color/custom_color2"
                     android:textSize="18sp" />
 
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/activity_post_remove_btn"
+                android:id="@+id/activity_edit_remove_btn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_remove_circle"
@@ -90,17 +90,6 @@
                 app:sliderIndicatorUnselectedColor="#FFF"
                 app:sliderScrollTimeInSec="1" />
         </RelativeLayout>
-
-        <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:hint="Description..."
-            android:maxLines="5"
-            app:hashtagColor="@color/custom_color2"
-            app:mentionColor="@color/custom_color4"
-            app:socialFlags="hashtag|mention" />
 
     </LinearLayout>
 </LinearLayout>

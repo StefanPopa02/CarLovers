@@ -5,6 +5,7 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 public class NewCarItem {
+    private String docId;
     private String userId;
     private String letter;
     private String brand;
@@ -29,6 +30,15 @@ public class NewCarItem {
         this.caracteristici = caracteristici;
         this.carPhoto = carPhoto;
         this.brandLogo = brandLogo;
+    }
+
+
+    public String getDocId() {
+        return docId;
+    }
+
+    public void setDocId(String docId) {
+        this.docId = docId;
     }
 
     public Timestamp getTimeAdded() {

@@ -9,7 +9,12 @@ public class SliderItem {
 
     public SliderItem() {
     }
-    public SliderItem(Uri imageUri){
+
+    public SliderItem(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public SliderItem(Uri imageUri) {
         this.imageUri = imageUri;
     }
 

@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.stefanpopa.carloversapp.model.NewCarItem;
 import com.stefanpopa.carloversapp.model.UserProfile;
 
 public class UserApi extends Application {
@@ -18,6 +19,16 @@ public class UserApi extends Application {
     private String userId;
     private static UserApi instance;
     private UserProfile userProfile;
+    private NewCarItem currentEditCar;
+    private boolean editCar;
+
+    public void setEditCar(boolean editCar){
+        this.editCar = editCar;
+    }
+
+    public boolean isEditCar() {
+        return editCar;
+    }
 
     public UserApi() {
     }
@@ -72,5 +83,13 @@ public class UserApi extends Application {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public NewCarItem getCurrentEditCar() {
+        return currentEditCar;
+    }
+
+    public void setCurrentEditCar(NewCarItem currentEditCar) {
+        this.currentEditCar = currentEditCar;
     }
 }

@@ -40,6 +40,7 @@ import com.stefanpopa.carloversapp.model.NewCarItem;
 import com.stefanpopa.carloversapp.model.Post;
 import com.stefanpopa.carloversapp.model.SliderItem;
 import com.stefanpopa.carloversapp.ui.SliderAdapter;
+import com.stefanpopa.carloversapp.util.UserApi;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -101,7 +102,7 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
         addImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CropImage.activity().setFixAspectRatio(true).setAspectRatio(4,3).setMinCropResultSize(128, 96).setMaxCropResultSize(8192, 6144).start(ConfirmAddCarActivity.this);
+                CropImage.activity().setFixAspectRatio(true).setAspectRatio(4, 3).setMinCropResultSize(128, 96).setMaxCropResultSize(8192, 6144).start(ConfirmAddCarActivity.this);
             }
         });
         removeImgBtn.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +133,7 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        NewCarItem newCarItem;
         letter = getIntent().getStringExtra("Letter");
         brand = getIntent().getStringExtra("Brand");
         model = getIntent().getStringExtra("Model");
@@ -143,7 +144,9 @@ public class ConfirmAddCarActivity extends AppCompatActivity {
         carPhoto = getIntent().getStringExtra("CarPhoto");
         finalCarPhotos.add(carPhoto);
         brandLogo = getIntent().getStringExtra("BrandLogo");
-        NewCarItem newCarItem = new NewCarItem(letter, brand, model, year, version, engine, caracteristici, finalCarPhotos, brandLogo);
+        newCarItem = new NewCarItem(letter, brand, model, year, version, engine, caracteristici, finalCarPhotos, brandLogo);
+
+
         confirm_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

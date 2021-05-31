@@ -22,26 +22,17 @@ import com.stefanpopa.carloversapp.util.UserApi;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SliderAdapterProfile extends
-        SliderViewAdapter<SliderAdapterProfile.SliderAdapterProfileVH> {
+public class SliderAdapterEditCar extends
+        SliderViewAdapter<SliderAdapterEditCar.SliderAdapterProfileVH> {
 
     private Context context;
-    private List<String> mSliderItems = new ArrayList<>();
-    private boolean isUserProfile = false;
+    private List<SliderItem> mSliderItems = new ArrayList<>();
 
-    public boolean isUserProfile() {
-        return isUserProfile;
-    }
-
-    public void setUserProfile(boolean userProfile) {
-        isUserProfile = userProfile;
-    }
-
-    public SliderAdapterProfile(Context context) {
+    public SliderAdapterEditCar(Context context) {
         this.context = context;
     }
 
-    public void renewItems(List<String> sliderItems) {
+    public void renewItems(List<SliderItem> sliderItems) {
         this.mSliderItems = sliderItems;
         notifyDataSetChanged();
     }
@@ -51,7 +42,7 @@ public class SliderAdapterProfile extends
         notifyDataSetChanged();
     }
 
-    public void addItem(String sliderItem) {
+    public void addItem(SliderItem sliderItem) {
         this.mSliderItems.add(sliderItem);
         notifyDataSetChanged();
     }
@@ -65,11 +56,19 @@ public class SliderAdapterProfile extends
     @Override
     public void onBindViewHolder(SliderAdapterProfileVH viewHolder, final int position) {
 
-        String sliderItem = mSliderItems.get(position);
+        SliderItem sliderItem = mSliderItems.get(position);
 
-        if (sliderItem != null) {
-            Picasso.get().load(sliderItem)
-                    .resize(1920,1440)
+        if (sliderItem.getImageUrl() != null) {
+            Picasso.get().load(sliderItem.getImageUrl())
+                    .resize(1920, 1440)
+                    //.onlyScaleDown()
+                    //.fit()
+                    //.centerCrop()
+                    .placeholder(R.drawable.no_car_img)
+                    .into(viewHolder.imageViewBackground);
+        } else if (sliderItem.getImageUri() != null) {
+            Picasso.get().load(sliderItem.getImageUri())
+                    .resize(1920, 1440)
                     //.onlyScaleDown()
                     //.fit()
                     //.centerCrop()
@@ -77,21 +76,6 @@ public class SliderAdapterProfile extends
                     .into(viewHolder.imageViewBackground);
         }
         Log.d("SLIDER_ADAPTER_PROFILE", "URL LA IMG:" + sliderItem);
-
-        if(isUserProfile){
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
-                    if(UserApi.getInstance().getCurrentEditCar().getUserId().equals(FirebaseAuth.getInstance().getUid())){
-                        UserApi.getInstance().setEditCar(true);
-                        Intent i = new Intent(context, EditProfileCarActivity.class);
-                        context.startActivity(i);
-                    }
-
-                }
-            });
-        }
 
     }
 
@@ -101,7 +85,7 @@ public class SliderAdapterProfile extends
         return mSliderItems.size();
     }
 
-    public List<String> getItems() {
+    public List<SliderItem> getItems() {
         return mSliderItems;
     }
 

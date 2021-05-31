@@ -160,6 +160,7 @@ public class ClubPageFragment extends Fragment {
                         break;
 
                     case R.id.club_page_members:
+                        addPostBtn.setVisibility(View.GONE);
                         selectedMenuText.setText("Members");
                         List<ClubMember> members = new ArrayList<>();
                         clubMemberAdapter = new ClubMemberAdapter(getContext(), members);
