@@ -7,9 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.MediaDrm;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
@@ -41,6 +44,7 @@ import com.stefanpopa.carloversapp.util.FirebaseData;
 import com.stefanpopa.carloversapp.util.UserApi;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -299,10 +303,21 @@ public class PostActivity extends AppCompatActivity {
             //Picasso.get().load(imageUri).resize(1920, 1440).placeholder(R.drawable.no_image).into(imageAdded);
         } else if (requestCode == PICK_VIDEO && resultCode == RESULT_OK) {
             assert data != null;
-            MediaObject mediaObject = new MediaObject();
-            mediaObject.setVideoUrl(data.getData().toString());
-            media.add(mediaObject);
-            sliderViewAdapter.renewItems(media);
+            Cursor returnCursor =
+                    getContentResolver().query(data.getData(), null, null, null, null);
+            int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+            returnCursor.moveToFirst();
+            int size = (int) returnCursor.getLong(sizeIndex);
+            int sizeMb = size / (1024 * 1024);
+            Log.d("POST_ACTIVITY", "VIDEO ARE DIMENSIUNEA: " + sizeMb);
+            if (sizeMb > 30) {
+                Toast.makeText(this, "File is too large!", Toast.LENGTH_SHORT).show();
+            } else {
+                MediaObject mediaObject = new MediaObject();
+                mediaObject.setVideoUrl(data.getData().toString());
+                media.add(mediaObject);
+                sliderViewAdapter.renewItems(media);
+            }
         } else {
             Toast.makeText(this, "Try Again!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(PostActivity.this, WelcomeActivity.class));

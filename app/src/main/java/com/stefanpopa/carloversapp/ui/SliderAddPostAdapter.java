@@ -29,8 +29,11 @@ public class SliderAddPostAdapter extends SliderViewAdapter<SliderAddPostAdapter
 
     private Context context;
     private List<MediaObject> media;
+    private SimpleExoPlayer player;
 
     public void deleteItem(int position){
+        player.pause();
+        player.release();
         this.media.remove(position);
         notifyDataSetChanged();
     }
@@ -78,14 +81,13 @@ public class SliderAddPostAdapter extends SliderViewAdapter<SliderAddPostAdapter
                     viewHolder.imageViewBackground.setVisibility(View.GONE);
                     viewHolder.playerView.setVisibility(View.VISIBLE);
                     Uri uri = Uri.parse(currentVideoUrl);
-                    SimpleExoPlayer player = new SimpleExoPlayer.Builder(context).build();
+                    player = new SimpleExoPlayer.Builder(context).build();
                     viewHolder.playerView.setPlayer(player);
                     MediaItem mediaItem = MediaItem.fromUri(uri);
                     player.setMediaItem(mediaItem);
                     player.prepare();
                     //player.play();
                     player.setRepeatMode(Player.REPEAT_MODE_OFF);
-                    //player.release();
                 } catch (Exception e) {
                     Log.d("SLIDER_POST_ADAPTER", "ERROR: " + e.getMessage());
                 }
