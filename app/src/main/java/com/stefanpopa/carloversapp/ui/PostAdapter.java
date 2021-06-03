@@ -61,6 +61,42 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> posts;
     private FirebaseUser firebaseUser;
     private boolean isPostDetail;
+    private SliderPostAdapter sliderPostAdapter;
+
+    public SliderPostAdapter getSliderPostAdapter() {
+        return sliderPostAdapter;
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
+        Log.d("POST_ADAPTER", "DETACHED VIEW abs:" + holder.getAbsoluteAdapterPosition() + " relativ: " + holder.getBindingAdapterPosition());
+        releasePlayer(holder);
+        super.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        //startPlayer(holder);
+    }
+
+    public void startPlayer(ViewHolder holder) {
+        SliderPostAdapter currentSliderPostAdapter = (SliderPostAdapter) holder.sliderView.getSliderAdapter();
+        if (currentSliderPostAdapter.player != null) {
+            currentSliderPostAdapter.player.setPlayWhenReady(true);
+            Log.d("POST_ADAPTER", "startPlayer duration: " + currentSliderPostAdapter.player.getDuration());
+            Log.d("POST_ADAPTER", "PLAYED EXOPLAYER");
+        }
+    }
+
+    public void releasePlayer(ViewHolder holder) {
+        SliderPostAdapter currentSliderPostAdapter = (SliderPostAdapter) holder.sliderView.getSliderAdapter();
+        if (currentSliderPostAdapter.player != null) {
+            currentSliderPostAdapter.player.setPlayWhenReady(false);
+            currentSliderPostAdapter.player.release();
+            Log.d("POST_ADAPTER", "RELEASED EXOPLAYER");
+        }
+    }
 
     public PostAdapter(Context context, List<Post> posts, boolean isPostDetail) {
         this.context = context;
@@ -86,8 +122,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        sliderPostAdapter = new SliderPostAdapter(context);
+        holder.sliderView.setSliderAdapter(sliderPostAdapter);
         Post post = posts.get(position);
-
         if (isPostDetail) {
             holder.postMore.setVisibility(View.GONE);
         } else {
@@ -118,7 +155,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         }
 
         if (post.getImageUrl() != null || post.getVideosUrl() != null) {
-            holder.sliderView.setSliderAdapter(new SliderPostAdapter(context, post));
+            sliderPostAdapter.renewPost(post);
         } else {
             holder.sliderView.setVisibility(View.GONE);
         }
@@ -163,7 +200,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                                 .replace(R.id.fragment_container, new ClubPageFragment(clubItem, UserApi.getInstance().getUserProfile()), "CLUBS_PAGE_FRAGMENT").addToBackStack(null).commit();
                     }
                 });
-
+                releasePlayer(holder);
             }
         });
         holder.postQuestion.setText(post.getDescription());
@@ -194,6 +231,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                             .add(R.id.fragment_container, new PostDetailsFragment(post), "CLUBS_POST_DETAIL_FRAGMENT")
                             .addToBackStack(null)
                             .commit();
+                    releasePlayer(holder);
                 }
             });
             holder.postNoOfComments.setVisibility(View.VISIBLE);
@@ -205,6 +243,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                             .add(R.id.fragment_container, new PostDetailsFragment(post), "CLUBS_POST_DETAIL_FRAGMENT")
                             .addToBackStack(null)
                             .commit();
+                    releasePlayer(holder);
                 }
             });
         }
@@ -338,7 +377,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             postAuthorFullname = itemView.findViewById(R.id.club_page_post_author);
             postHashtags = itemView.findViewById(R.id.club_page_post_hashtags);
             sliderView = itemView.findViewById(R.id.club_page_post_image);
+
         }
+
     }
 
 

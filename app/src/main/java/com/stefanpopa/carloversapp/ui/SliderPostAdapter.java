@@ -1,6 +1,7 @@
 package com.stefanpopa.carloversapp.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,12 +13,14 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SeekParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Picasso;
 import com.stefanpopa.carloversapp.R;
+import com.stefanpopa.carloversapp.activities.FullScreenActivity;
 import com.stefanpopa.carloversapp.fragments.PostDetailsFragment;
 import com.stefanpopa.carloversapp.model.MediaObject;
 import com.stefanpopa.carloversapp.model.Post;
@@ -32,9 +35,14 @@ public class SliderPostAdapter extends SliderViewAdapter<SliderPostAdapter.Slide
     private Post currentPost;
     private List<String> videosUrl;
     private List<MediaObject> media;
+    public SimpleExoPlayer player;
 
-    public SliderPostAdapter(Context context, Post post) {
-        this.context = context;
+
+    public SimpleExoPlayer getPlayer() {
+        return player;
+    }
+
+    public void renewPost(Post post) {
         this.currentPost = post;
         imageUrl = post.getImageUrl();
         videosUrl = post.getVideosUrl();
@@ -54,6 +62,11 @@ public class SliderPostAdapter extends SliderViewAdapter<SliderPostAdapter.Slide
             }
         }
         Log.d("SLIDER_POST_ADAPTER", "MEDIA CONTINE: " + media.toString());
+        notifyDataSetChanged();
+    }
+
+    public SliderPostAdapter(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -84,15 +97,30 @@ public class SliderPostAdapter extends SliderViewAdapter<SliderPostAdapter.Slide
                     Log.d("SLIDER_POST_ADAPTER", "VIDEO EXISTS");
                     viewHolder.imageViewBackground.setVisibility(View.GONE);
                     viewHolder.playerView.setVisibility(View.VISIBLE);
-                    Uri uri = Uri.parse(currentVideoUrl);
-                    SimpleExoPlayer player = new SimpleExoPlayer.Builder(context).build();
                     viewHolder.playerView.setPlayer(player);
+
+                    Uri uri = Uri.parse(currentVideoUrl);
                     MediaItem mediaItem = MediaItem.fromUri(uri);
                     player.setMediaItem(mediaItem);
                     player.prepare();
-                    //player.play();
                     player.setRepeatMode(Player.REPEAT_MODE_OFF);
+                    player.setPlayWhenReady(false);
                     //player.release();
+                    viewHolder.fullscreenBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("SLIDER_ADD_POST_ADAPTER", "FULLSCREEN CLICKED!");
+                            Intent i = new Intent(context, FullScreenActivity.class);
+                            Long positionSeek = player.getCurrentPosition();
+                            Log.d("SLIDER_POST_ADAPTER", "positionSeek: " + positionSeek);
+                            i.putExtra("seek", positionSeek);
+                            i.putExtra("Uri", currentVideoUrl);
+                            player.pause();
+                            player.setPlayWhenReady(false);
+                            player.release();
+                            context.startActivity(i);
+                        }
+                    });
                 } catch (Exception e) {
                     Log.d("SLIDER_POST_ADAPTER", "ERROR: " + e.getMessage());
                 }
@@ -122,12 +150,17 @@ public class SliderPostAdapter extends SliderViewAdapter<SliderPostAdapter.Slide
         View itemView;
         ImageView imageViewBackground;
         PlayerView playerView;
+        ImageView fullscreenBtn;
 
         public SliderPostAdapterViewHolder(View itemView) {
             super(itemView);
             imageViewBackground = itemView.findViewById(R.id.car_image_post);
             playerView = itemView.findViewById(R.id.exoplayer_item);
+            fullscreenBtn = playerView.findViewById(R.id.exo_fullscreen_icon);
+            player = new SimpleExoPlayer.Builder(context).build();
             this.itemView = itemView;
         }
     }
+
+
 }

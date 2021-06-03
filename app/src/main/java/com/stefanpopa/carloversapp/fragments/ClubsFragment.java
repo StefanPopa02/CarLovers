@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -53,6 +55,7 @@ public class ClubsFragment extends Fragment {
     private List<ClubItem> clubItems;
     private UserProfile userProfile;
     private FirebaseFirestore db;
+    private TextView allFollowingPostsBtn;
 
     public ClubsFragment() {
         // Required empty public constructor
@@ -89,6 +92,14 @@ public class ClubsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clubs, container, false);
         db = FirebaseFirestore.getInstance();
+        allFollowingPostsBtn = view.findViewById(R.id.posts_following_clubs);
+        allFollowingPostsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_left, R.anim.enter_from_right, R.anim.exit_to_right)
+                        .replace(R.id.fragment_container, new ClubFeedFragment(), "CLUBS_FEED_FRAGMENT").addToBackStack(null).commit();
+            }
+        });
         socialAutoCompleteTextView = view.findViewById(R.id.clubs_search_bar);
         recyclerViewClubItems = view.findViewById(R.id.clubs_recycler_view);
         recyclerViewClubItems.setHasFixedSize(true);

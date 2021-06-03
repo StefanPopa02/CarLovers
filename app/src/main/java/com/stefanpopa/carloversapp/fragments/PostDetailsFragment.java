@@ -77,6 +77,14 @@ public class PostDetailsFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("POST_ADAPTER", "ON PAUSE CALLED IN CLUB PAGE");
+//        PostAdapter.ViewHolder postAdapterVH = (PostAdapter.ViewHolder) recyclerViewImg.findViewHolderForAdapterPosition(0);
+//        postAdapter.releasePlayer(postAdapterVH);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -181,14 +189,6 @@ public class PostDetailsFragment extends Fragment {
                         }
                     });
                     commentAdapter.renewItems(comments);
-
-//                    List<DocumentSnapshot> docs = value.getDocuments();
-//                    for (DocumentSnapshot doc : docs) {
-//                        comments.add(doc.toObject(Comment.class));
-//                    }
-//
-//                    Log.d("POST_DETAILS_FRAGMENT", "COMMENTS: " + comments.toString());
-//                    commentAdapter.renewItems(comments);
                 } else {
                     Log.d("POST_DETAIL_FRAGMENT", "Current data: null");
                 }

@@ -1,11 +1,13 @@
 package com.stefanpopa.carloversapp.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.fragment.app.FragmentActivity;
@@ -13,11 +15,13 @@ import androidx.fragment.app.FragmentActivity;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Picasso;
 import com.stefanpopa.carloversapp.R;
+import com.stefanpopa.carloversapp.activities.FullScreenActivity;
 import com.stefanpopa.carloversapp.fragments.PostDetailsFragment;
 import com.stefanpopa.carloversapp.model.MediaObject;
 import com.stefanpopa.carloversapp.model.Post;
@@ -29,28 +33,26 @@ public class SliderAddPostAdapter extends SliderViewAdapter<SliderAddPostAdapter
 
     private Context context;
     private List<MediaObject> media;
-    private SimpleExoPlayer player;
+    public SimpleExoPlayer player;
 
-    public void deleteItem(int position){
-        player.pause();
-        player.release();
+    public void deleteItem(int position) {
         this.media.remove(position);
         notifyDataSetChanged();
     }
 
-    public void renewItems(List<MediaObject> media){
+    public void renewItems(List<MediaObject> media) {
         this.media = media;
         notifyDataSetChanged();
     }
 
-    public List<MediaObject> getItems(){
+    public List<MediaObject> getItems() {
         return this.media;
     }
 
     public SliderAddPostAdapter(Context context) {
         this.context = context;
         this.media = new ArrayList<>();
-        }
+    }
 
     @Override
     public SliderPostAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
@@ -81,7 +83,6 @@ public class SliderAddPostAdapter extends SliderViewAdapter<SliderAddPostAdapter
                     viewHolder.imageViewBackground.setVisibility(View.GONE);
                     viewHolder.playerView.setVisibility(View.VISIBLE);
                     Uri uri = Uri.parse(currentVideoUrl);
-                    player = new SimpleExoPlayer.Builder(context).build();
                     viewHolder.playerView.setPlayer(player);
                     MediaItem mediaItem = MediaItem.fromUri(uri);
                     player.setMediaItem(mediaItem);
@@ -105,13 +106,17 @@ public class SliderAddPostAdapter extends SliderViewAdapter<SliderAddPostAdapter
         View itemView;
         ImageView imageViewBackground;
         PlayerView playerView;
+        ImageView fullscreenBtn;
 
         public SliderPostAdapterViewHolder(View itemView) {
             super(itemView);
             imageViewBackground = itemView.findViewById(R.id.car_image_post);
             playerView = itemView.findViewById(R.id.exoplayer_item);
+            fullscreenBtn = playerView.findViewById(R.id.exo_fullscreen_icon);
+            player = new SimpleExoPlayer.Builder(context).build();
             this.itemView = itemView;
         }
     }
+
 }
 

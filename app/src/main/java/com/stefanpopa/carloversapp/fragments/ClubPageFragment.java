@@ -71,11 +71,12 @@ public class ClubPageFragment extends Fragment {
 
     }
 
-
     public ClubPageFragment(ClubItem clubItem, UserProfile userProfile) {
         this.clubItem = clubItem;
         this.userProfile = userProfile;
     }
+
+
 
     @Override
     public void onResume() {
@@ -296,4 +297,24 @@ public class ClubPageFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onPause() {
+        Log.d("POST_ADAPTER", "ON PAUSE CALLED IN CLUB PAGE");
+//        PostAdapter.ViewHolder postAdapterVH = (PostAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition();
+//        postAdapter.releasePlayer(postAdapterVH);
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.d("POST_ADAPTER", "ON DESTROY CALLED IN CLUB PAGE");
+        PostAdapter.ViewHolder postAdapterVH = (PostAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(0);
+        postAdapter.releasePlayer(postAdapterVH);
+        super.onDestroyView();
+    }
 }

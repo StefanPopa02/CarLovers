@@ -1,4 +1,5 @@
 <resources>
+    <string name="google_maps_api_key">AIzaSyBT7qp9OyvyCHMt6khtJsLH8_S2TpzulBE</string>
     <string name="app_name">CarLovers</string>
     <string name="register">register</string>
     <string name="login">login</string>

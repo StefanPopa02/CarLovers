@@ -21,18 +21,49 @@
                 android:layout_height="wrap_content"
                 android:background="?android:attr/windowBackground">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_search" />
-
-                <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
-                    android:id="@+id/clubs_search_bar"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@android:color/transparent"
-                    android:hint="Search..." />
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/posts_following_clubs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_slab_bold"
+                        android:gravity="center_horizontal"
+                        android:text="Latest posts of your following clubs"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_slab_bold"
+                        android:gravity="center_horizontal"
+                        android:text="OR"
+                        android:textColor="@color/colorAccent" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_search" />
+
+                        <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
+                            android:id="@+id/clubs_search_bar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="@android:color/transparent"
+                            android:hint="Search club..." />
+                    </LinearLayout>
+                </LinearLayout>
 
             </androidx.appcompat.widget.Toolbar>
 
