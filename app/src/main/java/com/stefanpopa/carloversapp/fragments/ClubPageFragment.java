@@ -256,6 +256,7 @@ public class ClubPageFragment extends Fragment {
                             return o1.getTimeAdded().compareTo(o2.getTimeAdded());
                         }
                     });
+                    //Collections.reverse(posts);
                     postAdapter.renewPosts(postsData);
                 }
             }
@@ -284,6 +285,7 @@ public class ClubPageFragment extends Fragment {
                             return o1.getTimeAdded().compareTo(o2.getTimeAdded());
                         }
                     });
+                    Collections.reverse(posts);
                     List<String> videosUrl = new ArrayList<>();
                     videosUrl.add("https://firebasestorage.googleapis.com/v0/b/carloversapp-16ea7.appspot.com/o/Videos%2Fb6.mp4?alt=media&token=b601ba4e-871c-4732-893b-790cc9834719");
                     postAdapter.renewPosts(postsData);
@@ -313,8 +315,8 @@ public class ClubPageFragment extends Fragment {
     @Override
     public void onDestroyView() {
         Log.d("POST_ADAPTER", "ON DESTROY CALLED IN CLUB PAGE");
-        PostAdapter.ViewHolder postAdapterVH = (PostAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(0);
-        postAdapter.releasePlayer(postAdapterVH);
+//        PostAdapter.ViewHolder postAdapterVH = (PostAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(0);
+//        postAdapter.releasePlayer(postAdapterVH);
         super.onDestroyView();
     }
 }

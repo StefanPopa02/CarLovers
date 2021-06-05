@@ -98,76 +98,6 @@ public class MapsFragment extends Fragment {
         }
     };
 
-    private void addMapMarkers() {
-
-        if (mGoogleMap != null) {
-
-            if (mClusterManager == null) {
-                mClusterManager = new ClusterManager<ClusterMarker>(getActivity().getApplicationContext(), mGoogleMap);
-            }
-            if (mClusterManagerRenderer == null) {
-                mClusterManagerRenderer = new MyClusterManagerRenderer(
-                        getActivity(),
-                        mGoogleMap,
-                        mClusterManager
-                );
-                mClusterManager.setRenderer(mClusterManagerRenderer);
-            }
-
-            Log.d(TAG, "addMapMarkers: userLocationlist: " + userLocationList);
-            List<Task<QuerySnapshot>> tasks = new ArrayList<>();
-            for (UserLocation userLocation : userLocationList) {
-                tasks.add(db.collection("users").whereEqualTo("id", userLocation.getUserId()).get());
-            }
-            Tasks.whenAllSuccess(tasks).addOnCompleteListener(new OnCompleteListener<List<Object>>() {
-                @Override
-                public void onComplete(@NonNull Task<List<Object>> task) {
-                    if (task.isSuccessful()) {
-                        List<Object> results = task.getResult();
-                        for (Object user : results) {
-                            QuerySnapshot querySnapshot = (QuerySnapshot) user;
-                            UserProfile currentUser = querySnapshot.getDocuments().get(0).toObject(UserProfile.class);
-                            Log.d(TAG, "onComplete: USER: " + currentUser);
-                            String snippet = "";
-                            if (currentUser.getId().equals(FirebaseAuth.getInstance().getUid())) {
-                                snippet = "This is you";
-                            } else {
-                                snippet = "Determine route to " + currentUser.getUsername() + "?";
-                            }
-
-                            String avatar = "default"; // set the default avatar
-                            try {
-                                avatar = currentUser.getImageurl();
-                            } catch (NumberFormatException e) {
-                                Log.d(TAG, "addMapMarkers: no avatar for " + userLocation.getUserId() + ", setting default.");
-                            }
-                            ClusterMarker newClusterMarker = new ClusterMarker(
-                                    new LatLng(userLocation.getGeoPoint().getLatitude(), userLocation.getGeoPoint().getLongitude()),
-                                    currentUser.getUsername(),
-                                    snippet,
-                                    avatar,
-                                    currentUser
-                            );
-                            mClusterManager.addItem(newClusterMarker);
-                            mClusterMarkers.add(newClusterMarker);
-                        }
-                        mClusterManager.cluster();
-                    }
-                }
-            });
-
-            //setCameraView();
-        }
-    }
-
-    private void setUserPosition() {
-        for (UserLocation userLocation : userLocationList) {
-            if (userLocation.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
-
-            }
-        }
-    }
-
     private void setCameraView() {
         if (userLocation != null) {
             double bottomBoundary = userLocation.getGeoPoint().getLatitude() - .1;
@@ -224,6 +154,70 @@ public class MapsFragment extends Fragment {
 
     }
 
+    private void addMapMarkers(UserLocation currentUserLocation) {
+
+        if (mGoogleMap != null) {
+
+            if (mClusterManager == null) {
+                mClusterManager = new ClusterManager<ClusterMarker>(getActivity().getApplicationContext(), mGoogleMap);
+            }
+            if (mClusterManagerRenderer == null) {
+                mClusterManagerRenderer = new MyClusterManagerRenderer(
+                        getContext(),
+                        mGoogleMap,
+                        mClusterManager
+                );
+                mClusterManager.setRenderer(mClusterManagerRenderer);
+            }
+
+            Log.d(TAG, "addMapMarkers: userLocation: " + currentUserLocation);
+            List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+            userLocationList = new ArrayList<>();
+            userLocationList.add(currentUserLocation);
+            for (UserLocation userLocation : userLocationList) {
+                tasks.add(db.collection("users").whereEqualTo("id", userLocation.getUserId()).get());
+            }
+            Tasks.whenAllSuccess(tasks).addOnCompleteListener(new OnCompleteListener<List<Object>>() {
+                @Override
+                public void onComplete(@NonNull Task<List<Object>> task) {
+                    if (task.isSuccessful()) {
+                        List<Object> results = task.getResult();
+                        for (Object user : results) {
+                            QuerySnapshot querySnapshot = (QuerySnapshot) user;
+                            UserProfile currentUser = querySnapshot.getDocuments().get(0).toObject(UserProfile.class);
+                            Log.d(TAG, "onComplete: USER: " + currentUser);
+                            String snippet = "";
+                            if (currentUser.getId().equals(FirebaseAuth.getInstance().getUid())) {
+                                snippet = "This is you";
+                            } else {
+                                snippet = "Determine route to " + currentUser.getUsername() + "?";
+                            }
+
+                            String avatar = "default"; // set the default avatar
+                            try {
+                                avatar = currentUser.getImageurl();
+                            } catch (NumberFormatException e) {
+                                Log.d(TAG, "addMapMarkers: no avatar for " + userLocation.getUserId() + ", setting default.");
+                            }
+                            ClusterMarker newClusterMarker = new ClusterMarker(
+                                    new LatLng(currentUserLocation.getGeoPoint().getLatitude(), currentUserLocation.getGeoPoint().getLongitude()),
+                                    currentUser.getUsername(),
+                                    snippet,
+                                    avatar,
+                                    currentUser
+                            );
+                            mClusterManager.addItem(newClusterMarker);
+                            mClusterMarkers.add(newClusterMarker);
+                        }
+                        mClusterManager.cluster();
+                    }
+                }
+            });
+
+            //setCameraView();
+        }
+    }
+
     private void getUsersLocation() {
         Query query = db.collection("UserLocation");
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -239,27 +233,43 @@ public class MapsFragment extends Fragment {
                             case ADDED:
                                 Log.d(TAG, "New userLocation: " + dc.getDocument().getData());
                                 UserLocation currentUserLocation = dc.getDocument().toObject(UserLocation.class);
-                                boolean OK = false;
-                                for (UserLocation userLocation : userLocationList) {
-                                    if (userLocation.getUserId().equals(currentUserLocation.getUserId())) {
-                                        userLocationList.remove(userLocation);
-                                        userLocationList.add(currentUserLocation);
-                                        OK = true;
-                                        break;
-                                    }
-                                }
-                                if (!OK) {
-                                    userLocationList.add(currentUserLocation);
-                                }
-                                OK = false;
+                                addMapMarkers(currentUserLocation);
+//                                boolean OK = false;
+//                                for (UserLocation userLocation : userLocationList) {
+//                                    if (userLocation.getUserId().equals(currentUserLocation.getUserId())) {
+//                                        userLocationList.remove(userLocation);
+//                                        userLocationList.add(currentUserLocation);
+//                                        OK = true;
+//                                        break;
+//                                    }
+//                                }
+//                                if (!OK) {
+//                                    userLocationList.add(currentUserLocation);
+//                                }
+//                                OK = false;
+//                                addMapMarkers(currentUserLocation);
                                 break;
                             case MODIFIED:
                                 Log.d(TAG, "Modified userLocation: " + dc.getDocument().getData());
-                                UserLocation currentUserlocation = dc.getDocument().toObject(UserLocation.class);
-                                for (UserLocation userLocation : userLocationList) {
-                                    if (userLocation.getUserId().equals(currentUserlocation.getUserId())) {
-                                        userLocationList.remove(userLocation);
-                                        userLocationList.add(currentUserlocation);
+                                currentUserLocation = dc.getDocument().toObject(UserLocation.class);
+//                                for (UserLocation userLocation : userLocationList) {
+//                                    if (userLocation.getUserId().equals(currentUserlocation.getUserId())) {
+//                                        userLocationList.remove(userLocation);
+//                                        userLocationList.add(currentUserlocation);
+//                                        break;
+//                                    }
+//                                }
+
+                                for (ClusterMarker clusterMarker : mClusterMarkers) {
+                                    if (clusterMarker.getUser().getId().equals(currentUserLocation.getUserId())) {
+                                        LatLng updatedLatLng = new LatLng(
+                                                currentUserLocation.getGeoPoint().getLatitude(),
+                                                currentUserLocation.getGeoPoint().getLongitude()
+                                        );
+                                        clusterMarker.setPosition(updatedLatLng);
+                                        if (mClusterManagerRenderer != null) {
+                                            mClusterManagerRenderer.setUpdateMarker(clusterMarker);
+                                        }
                                         break;
                                     }
                                 }
@@ -269,7 +279,7 @@ public class MapsFragment extends Fragment {
                                 break;
                         }
                     }
-                    addMapMarkers();
+
                 }
             }
         });
