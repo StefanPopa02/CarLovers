@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:keepScreenOn="true"
     tools:context=".activities.FullScreenActivity">
 
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/player_view"
-        app:controller_layout_id="@layout/exo_playback_control_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:controller_layout_id="@layout/exo_playback_control_view" />
 
 </RelativeLayout>

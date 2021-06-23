@@ -7,7 +7,7 @@ public class ClubMember {
     private boolean isAdmin;
     private String imageProfileUrl;
 
-    public ClubMember(){
+    public ClubMember() {
 
     }
 

@@ -69,7 +69,7 @@ public class SliderAdapterProfile extends
 
         if (sliderItem != null) {
             Picasso.get().load(sliderItem)
-                    .resize(1920,1440)
+                    .resize(1920, 1440)
                     //.onlyScaleDown()
                     //.fit()
                     //.centerCrop()
@@ -78,12 +78,12 @@ public class SliderAdapterProfile extends
         }
         Log.d("SLIDER_ADAPTER_PROFILE", "URL LA IMG:" + sliderItem);
 
-        if(isUserProfile){
+        if (isUserProfile) {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
-                    if(UserApi.getInstance().getCurrentEditCar().getUserId().equals(FirebaseAuth.getInstance().getUid())){
+                    if (UserApi.getInstance().getCurrentEditCar().getUserId().equals(FirebaseAuth.getInstance().getUid())) {
                         UserApi.getInstance().setEditCar(true);
                         Intent i = new Intent(context, EditProfileCarActivity.class);
                         context.startActivity(i);
@@ -97,7 +97,6 @@ public class SliderAdapterProfile extends
 
     @Override
     public int getCount() {
-        //slider view count could be dynamic size
         return mSliderItems.size();
     }
 

@@ -52,9 +52,9 @@ public class SimpleXMLParser {
                             newEntry.setLink(xpp.nextText());
                         } else if (name.equals(imageLinkTagName) && newEntry.getImageUrl() == null) {
                             Log.d("XML_ATTRIBUTE_COUNT", String.valueOf(xpp.getAttributeCount()));
-                            if(imageLinkTagPosition != -1){
+                            if (imageLinkTagPosition != -1) {
                                 newEntry.setImageUrl(xpp.getAttributeValue(imageLinkTagPosition));
-                            }else{
+                            } else {
                                 newEntry.setImageUrl(xpp.nextText());
                             }
                         }

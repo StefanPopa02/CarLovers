@@ -11,18 +11,18 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="150dp"
-        android:src="@drawable/carlovers_logo_big"
-        android:contentDescription="@string/img_contentDesc"/>
+        android:contentDescription="@string/img_contentDesc"
+        android:src="@drawable/carlovers_logo_big" />
 
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:autofillHints="@string/email"
         android:background="@drawable/selector_edit_text"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
-        android:autofillHints="@string/email"
         android:padding="10dp" />
 
     <EditText
@@ -31,9 +31,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:autofillHints="@string/password"
-        android:inputType="textPassword"
         android:background="@drawable/selector_edit_text"
         android:hint="@string/password"
+        android:inputType="textPassword"
         android:padding="10dp" />
 
     <Button

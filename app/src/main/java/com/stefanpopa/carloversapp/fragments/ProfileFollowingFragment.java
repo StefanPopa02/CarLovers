@@ -55,7 +55,7 @@ public class ProfileFollowingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((WelcomeActivity)getActivity()).bottomNavigationView.getMenu().getItem(3).setChecked(true);
+        ((WelcomeActivity) getActivity()).bottomNavigationView.getMenu().getItem(3).setChecked(true);
         Log.d("PROFILE_FOLLOWING_FRAGMENT", "onResume called: ");
     }
 
@@ -95,7 +95,7 @@ public class ProfileFollowingFragment extends Fragment {
     private void getCarClubItems(CallbackMethod callbackMethod) {
         List<Integer> followingClubs = userProfile.getFollowingClubs();
         Log.d("PROFILE_FOLLOWING_FRAGMENT", "User profile: " + userProfile);
-        if(followingClubs.size()>0) {
+        if (followingClubs.size() > 0) {
             db.collection("carClubItems").whereIn("id", followingClubs).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -115,7 +115,7 @@ public class ProfileFollowingFragment extends Fragment {
                     Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-        }else{
+        } else {
             callbackMethod.getCarClubItemsData(new ArrayList<>());
         }
     }

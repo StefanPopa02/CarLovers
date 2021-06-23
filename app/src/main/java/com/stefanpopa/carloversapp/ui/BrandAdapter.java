@@ -26,7 +26,7 @@ public class BrandAdapter extends ArrayAdapter<BrandItem> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return initView(position, convertView, parent,R.layout.addcar_spinner_item_img_text);
+        return initView(position, convertView, parent, R.layout.addcar_spinner_item_img_text);
     }
 
     @Override

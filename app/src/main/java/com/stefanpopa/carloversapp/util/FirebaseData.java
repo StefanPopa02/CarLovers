@@ -11,12 +11,12 @@ public class FirebaseData {
     private List<ClubItem> clubItems;
     private ClubItem selectedClubItem;
 
-    private FirebaseData(){
+    private FirebaseData() {
 
     }
 
-    public static FirebaseData getInstance(){
-        if(instance == null){
+    public static FirebaseData getInstance() {
+        if (instance == null) {
             instance = new FirebaseData();
         }
         return instance;

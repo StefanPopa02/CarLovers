@@ -10,7 +10,7 @@ public class Comment {
     private String commentMessage;
     private Timestamp timeAdded;
 
-    public Comment(){
+    public Comment() {
 
     }
 

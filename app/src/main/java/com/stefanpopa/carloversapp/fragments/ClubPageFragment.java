@@ -77,7 +77,6 @@ public class ClubPageFragment extends Fragment {
     }
 
 
-
     @Override
     public void onResume() {
 
@@ -216,18 +215,6 @@ public class ClubPageFragment extends Fragment {
                             }
                         });
                     }
-//                    Collections.sort(members, new Comparator<ClubMember>() {
-//                        @Override
-//                        public int compare(ClubMember o1, ClubMember o2) {
-//                            if (o1.isAdmin() == true && o2.isAdmin() == false) {
-//                                return 1;
-//                            } else if (o1.isAdmin() == false && o2.isAdmin() == true) {
-//                                return -1;
-//                            } else {
-//                                return 0;
-//                            }
-//                        }
-//                    });
                     Log.d("CLUB_PAGE_FRAGMENT", "ALL MEMBERS: " + members);
                 }
             }

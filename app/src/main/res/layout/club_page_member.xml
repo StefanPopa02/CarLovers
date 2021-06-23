@@ -46,6 +46,6 @@
         android:fontFamily="@font/roboto_slab_bold"
         android:gravity="center_vertical"
         android:text="Administrator"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -118,13 +118,6 @@
                 android:layout_toEndOf="@id/club_page_post_like"
                 android:src="@drawable/ic_comments" />
 
-            <!--            <ImageView-->
-            <!--                android:layout_width="30dp"-->
-            <!--                android:layout_height="30dp"-->
-            <!--                android:src="@drawable/ic_save"-->
-            <!--                android:layout_alignParentEnd="true"-->
-            <!--                android:id="@+id/save"/>-->
-
         </RelativeLayout>
 
         <TextView
@@ -144,16 +137,6 @@
             android:text="Author Fullname"
             android:textColor="@color/custom_color1"
             android:textStyle="bold" />
-
-        <com.hendraanggrian.appcompat.widget.SocialTextView
-            android:id="@+id/club_page_post_hashtags"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="#hashtags"
-            android:textColor="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/club_page_post_no_of_comments"

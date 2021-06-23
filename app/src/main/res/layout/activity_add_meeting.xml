@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.EditProfileActivity">
+    tools:context=".activities.AddMeetingActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/bar"
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/add_meeting_close"
+                    android:id="@+id/meeting_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -36,21 +36,21 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@id/add_meeting_close"
+                    android:layout_toEndOf="@id/meeting_close"
                     android:fontFamily="@font/roboto"
-                    android:text="Edit Profile"
+                    android:text="Add new meeting"
                     android:textColor="@color/custom_color2"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/edit_profile_save"
+                    android:id="@+id/add_meeting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/roboto"
-                    android:text="SAVE"
+                    android:text="ADD"
                     android:textColor="@color/custom_color2"
                     android:textSize="18sp" />
 
@@ -66,47 +66,40 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/edit_profile_image_profile"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/meeting" />
 
         <TextView
-            android:id="@+id/edit_profile_change_photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Change Photo"
-            android:textColor="@color/custom_color4"
-            android:textSize="18sp" />
-
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/edit_profile_first_name"
+            android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="First name"
-            app:met_floatingLabel="normal" />
+            android:fontFamily="@font/roboto_slab_bold"
+            android:text="address"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/edit_profile_last_name"
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Last name"
+            android:hint="Description of event"
             app:met_floatingLabel="normal" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/edit_profile_bio"
+            android:id="@+id/edit_text_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Bio"
+            android:hint="Choose date and time"
             app:met_floatingLabel="normal" />
+
 
     </LinearLayout>
+
 
 </LinearLayout>

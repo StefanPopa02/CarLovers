@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/club_page_posts"
+    <item
+        android:id="@+id/club_page_posts"
         android:icon="@drawable/ic_feed"
-        android:title=""/>
+        android:title="" />
 
-    <item android:id="@+id/club_page_announces"
+    <item
+        android:id="@+id/club_page_announces"
         android:icon="@drawable/ic_announces"
-        android:title=""/>
+        android:title="" />
 
-    <item android:id="@+id/club_page_members"
+    <item
+        android:id="@+id/club_page_members"
         android:icon="@drawable/ic_groups"
-        android:title=""/>
+        android:title="" />
 
 </menu>

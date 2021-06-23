@@ -22,9 +22,9 @@
             android:id="@+id/club_brand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_slab_bold"
             android:maxLines="1"
             android:text="Peugeot"
-            android:fontFamily="@font/roboto_slab_bold"
             android:textColor="@color/design_default_color_primary_dark"
             android:textStyle="bold" />
 
@@ -32,8 +32,8 @@
             android:id="@+id/club_model"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="1"
             android:fontFamily="@font/newsreader"
+            android:maxLines="1"
             android:text="308" />
 
     </LinearLayout>
@@ -42,12 +42,11 @@
         android:id="@+id/club_follow_btn"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:text="Follow"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:background="@drawable/selector_edit_text"
         android:fontFamily="@font/roboto_slab_bold"
-        android:visibility="gone"
-         />
+        android:text="Follow"
+        android:visibility="gone" />
 
 </RelativeLayout>

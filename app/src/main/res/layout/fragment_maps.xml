@@ -12,4 +12,37 @@
         android:layout_height="match_parent"
         tools:context=".fragments.MapsFragment" />
 
+    <RelativeLayout
+        android:id="@+id/relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/button_background"
+        android:elevation="10dp">
+
+        <ImageView
+            android:id="@+id/magnify"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_search" />
+
+        <EditText
+            android:id="@+id/input_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/magnify"
+            android:gravity="center_vertical"
+            android:hint="Enter Address"
+            android:imeOptions="actionSearch"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+
 </RelativeLayout>

@@ -32,7 +32,7 @@ public class ClubMemberAdapter extends RecyclerView.Adapter<ClubMemberAdapter.Vi
         this.members = members;
     }
 
-    public void renewItems(List<ClubMember> members){
+    public void renewItems(List<ClubMember> members) {
         this.members = new ArrayList<>(members);
         notifyDataSetChanged();
     }

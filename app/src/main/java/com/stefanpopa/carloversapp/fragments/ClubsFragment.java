@@ -58,7 +58,6 @@ public class ClubsFragment extends Fragment {
     private TextView allFollowingPostsBtn;
 
     public ClubsFragment() {
-        // Required empty public constructor
     }
 
     public static ClubsFragment newInstance(String param1, String param2) {
@@ -82,7 +81,7 @@ public class ClubsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((WelcomeActivity)getActivity()).bottomNavigationView.getMenu().getItem(1).setChecked(true);
+        ((WelcomeActivity) getActivity()).bottomNavigationView.getMenu().getItem(1).setChecked(true);
         Log.d("CLUBS_FRAGMENT", "onResume called: ");
     }
 

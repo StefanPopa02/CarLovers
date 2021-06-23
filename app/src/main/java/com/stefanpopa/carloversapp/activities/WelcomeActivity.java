@@ -139,11 +139,6 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -156,18 +151,12 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public boolean isServicesOK() {
-        Log.d(TAG, "isServicesOK: checking google services version");
+        int playServicesAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(WelcomeActivity.this);
 
-        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(WelcomeActivity.this);
-
-        if (available == ConnectionResult.SUCCESS) {
-            //everything is fine and the user can make map requests
-            Log.d(TAG, "isServicesOK: Google Play Services is working");
+        if (playServicesAvailable == ConnectionResult.SUCCESS) {
             return true;
-        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
-            //an error occured but we can resolve it
-            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(WelcomeActivity.this, available, ERROR_DIALOG_REQUEST);
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(playServicesAvailable)) {
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(WelcomeActivity.this, playServicesAvailable, ERROR_DIALOG_REQUEST);
             dialog.show();
         } else {
             Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
@@ -182,7 +171,6 @@ public class WelcomeActivity extends AppCompatActivity {
         mLocationPermissionGranted = false;
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mLocationPermissionGranted = true;

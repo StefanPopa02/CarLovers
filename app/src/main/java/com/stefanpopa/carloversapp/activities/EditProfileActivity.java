@@ -71,7 +71,7 @@ public class EditProfileActivity extends AppCompatActivity {
         pd.setMessage("Please wait...");
         db = FirebaseFirestore.getInstance();
         profileId = FirebaseAuth.getInstance().getUid();
-        closeBtn = findViewById(R.id.edit_profile_close);
+        closeBtn = findViewById(R.id.add_meeting_close);
         saveBtn = findViewById(R.id.edit_profile_save);
         profilePic = findViewById(R.id.edit_profile_image_profile);
         changePhotoBtn = findViewById(R.id.edit_profile_change_photo);
@@ -96,7 +96,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
             }
         });
-
 
 
         changePhotoBtn.setOnClickListener(new View.OnClickListener() {

@@ -60,37 +60,60 @@ public class MyClusterManagerRenderer extends DefaultClusterRenderer<ClusterMark
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
         Log.d(TAG, "onBeforeClusterItemRendered: title: " + item.getTitle() + " snippet: " + item.getSnippet());
         markerOptions.title(item.getTitle());
+        markerOptions.snippet(item.getSnippet());
     }
 
     @Override
     protected void onClusterItemRendered(@NonNull ClusterMarker item, @NonNull Marker markerOptions) {
         Log.d("MY_CLUSTER_MANAGER_RENDERER", "onClusterItemRendered: profilepicUrl: " + item.getIconPicture());
 
-        String url = item.getIconPicture();
-        if (url.equals("default")) {
-            url = "https://firebasestorage.googleapis.com/v0/b/carloversapp-16ea7.appspot.com/o/UserProfilePhotos%2Ficon_no_profile.png?alt=media&token=3438aae4-51d5-4876-8578-079709552461";
+        if (!item.isMeeting()) {
+            String url = item.getIconPicture();
+            if (url.equals("default")) {
+                url = "https://firebasestorage.googleapis.com/v0/b/carloversapp-16ea7.appspot.com/o/UserProfilePhotos%2Ficon_no_profile.png?alt=media&token=3438aae4-51d5-4876-8578-079709552461";
+            }
+
+            Glide.with(context)
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new CustomTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                            Bitmap icon = iconGenerator.makeIcon();
+                            markerOptions.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
+                            Log.d(TAG, "onClusterItemRendered: title: " + item.getTitle() + " snippet: " + item.getSnippet());
+                            markerOptions.setTitle(item.getTitle());
+                            markerOptions.setSnippet(item.getSnippet());
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                        }
+                    });
+        } else if (item.isMeeting()) {
+            String imgUrl = "https://firebasestorage.googleapis.com/v0/b/carloversapp-16ea7.appspot.com/o/Meeting%2Fmeeting.png?alt=media&token=19da3787-4faf-4c1a-8a77-00ac2ffbcefd";
+            Glide.with(context)
+                    .load(imgUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new CustomTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                            Bitmap icon = iconGenerator.makeIcon();
+                            markerOptions.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
+                            Log.d(TAG, "onClusterItemRendered: title: " + item.getTitle() + " snippet: " + item.getSnippet());
+                            markerOptions.setTitle(item.getTitle());
+                            markerOptions.setSnippet(item.getSnippet());
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                        }
+                    });
         }
-
-        Glide.with(context)
-                .load(url)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(new CustomTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        imageView.setImageDrawable(resource);
-                        Bitmap icon = iconGenerator.makeIcon();
-                        markerOptions.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
-                        Log.d(TAG, "onClusterItemRendered: title: " + item.getTitle() + " snippet: " + item.getSnippet());
-                        markerOptions.setTitle(item.getTitle());
-                        markerOptions.setSnippet(item.getSnippet());
-                        //markerOptions.showInfoWindow();
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-
-                    }
-                });
     }
 
     @Override
@@ -103,5 +126,29 @@ public class MyClusterManagerRenderer extends DefaultClusterRenderer<ClusterMark
         if (marker != null) {
             marker.setPosition(clusterMarker.getPosition());
         }
+    }
+
+    @Override
+    public void setOnClusterInfoWindowClickListener(ClusterManager.OnClusterInfoWindowClickListener<ClusterMarker> listener) {
+        super.setOnClusterInfoWindowClickListener(listener);
+        Log.d(TAG, "setOnClusterInfoWindowClickListener: ");
+    }
+
+    @Override
+    public void setOnClusterInfoWindowLongClickListener(ClusterManager.OnClusterInfoWindowLongClickListener<ClusterMarker> listener) {
+        super.setOnClusterInfoWindowLongClickListener(listener);
+        Log.d(TAG, "setOnClusterInfoWindowLongClickListener: ");
+    }
+
+    @Override
+    public void setOnClusterItemInfoWindowClickListener(ClusterManager.OnClusterItemInfoWindowClickListener<ClusterMarker> listener) {
+        super.setOnClusterItemInfoWindowClickListener(listener);
+        Log.d(TAG, "setOnClusterItemInfoWindowClickListener: ");
+    }
+
+    @Override
+    public void setOnClusterItemInfoWindowLongClickListener(ClusterManager.OnClusterItemInfoWindowLongClickListener<ClusterMarker> listener) {
+        super.setOnClusterItemInfoWindowLongClickListener(listener);
+        Log.d(TAG, "setOnClusterItemInfoWindowLongClickListener: ");
     }
 }

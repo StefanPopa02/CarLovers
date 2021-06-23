@@ -55,7 +55,7 @@ public class SliderAdapter extends
 
         if (sliderItem.getImageUri() != null) {
             Picasso.get().load(sliderItem.getImageUri()).placeholder(R.drawable.no_car_img).resize(600, 450).into(viewHolder.imageViewBackground);
-        }else{
+        } else {
             Picasso.get().load(sliderItem.getImageUrl()).placeholder(R.drawable.no_car_img).resize(600, 450).into(viewHolder.imageViewBackground);
         }
         Log.d("SLIDER_ADAPTER", "URL LA IMG:" + sliderItem.getImageUrl());
@@ -70,7 +70,6 @@ public class SliderAdapter extends
 
     @Override
     public int getCount() {
-        //slider view count could be dynamic size
         return mSliderItems.size();
     }
 

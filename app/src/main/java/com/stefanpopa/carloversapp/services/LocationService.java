@@ -83,49 +83,41 @@ public class LocationService extends Service {
 
     private void getLocation() {
 
-        // ---------------------------------- LocationRequest ------------------------------------
-        // Create the location request to start receiving updates
         LocationRequest mLocationRequestHighAccuracy = new LocationRequest();
         mLocationRequestHighAccuracy.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequestHighAccuracy.setInterval(UPDATE_INTERVAL);
         mLocationRequestHighAccuracy.setFastestInterval(FASTEST_INTERVAL);
         mLocationRequestHighAccuracy.setSmallestDisplacement(MINIMUM_DISTANCE);
 
-        // new Google API SDK v11 uses getFusedLocationProviderClient(this)
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "getLocation: stopping the location service.");
             stopSelf();
             return;
         }
-        Log.d(TAG, "getLocation: getting location information.");
         mFusedLocationClient.requestLocationUpdates(mLocationRequestHighAccuracy, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
 
-                        Log.d(TAG, "onLocationResult: got location result.");
-
                         Location location = locationResult.getLastLocation();
 
                         if (location != null) {
-//                            UserProfile user = ((UserApi) (getApplicationContext())).getUserProfile();
                             GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                             UserLocation userLocation = new UserLocation(geoPoint, null, FirebaseAuth.getInstance().getUid());
                             saveUserLocation(userLocation);
                         }
                     }
                 },
-                Looper.myLooper()); // Looper.myLooper tells this to repeat forever until thread is destroyed
+                Looper.myLooper());
     }
 
     private void saveUserLocation(final UserLocation userLocation) {
 
         try {
-            DocumentReference locationRef = FirebaseFirestore.getInstance()
+            DocumentReference locationDocRef = FirebaseFirestore.getInstance()
                     .collection("UserLocation")
                     .document(FirebaseAuth.getInstance().getUid());
 
-            locationRef.set(userLocation).addOnCompleteListener(new OnCompleteListener<Void>() {
+            locationDocRef.set(userLocation).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
@@ -136,8 +128,6 @@ public class LocationService extends Service {
                 }
             });
         } catch (NullPointerException e) {
-            Log.e(TAG, "saveUserLocation: User instance is null, stopping location service.");
-            Log.e(TAG, "saveUserLocation: NullPointerException: " + e.getMessage());
             stopSelf();
         }
 

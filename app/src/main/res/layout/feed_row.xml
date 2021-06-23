@@ -33,9 +33,9 @@
             android:id="@+id/feed_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/newsreader"
             android:padding="10dp"
             android:text="Title..."
-            android:fontFamily="@font/newsreader"
             android:textColor="@color/custom_color2"
             android:textSize="18sp"
             android:textStyle="bold" />

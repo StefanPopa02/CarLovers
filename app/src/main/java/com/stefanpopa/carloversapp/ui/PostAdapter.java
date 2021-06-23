@@ -375,7 +375,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             postNoOfLikes = itemView.findViewById(R.id.club_page_post_no_of_likes);
             postNoOfComments = itemView.findViewById(R.id.club_page_post_no_of_comments);
             postAuthorFullname = itemView.findViewById(R.id.club_page_post_author);
-            postHashtags = itemView.findViewById(R.id.club_page_post_hashtags);
+            //postHashtags = itemView.findViewById(R.id.club_page_post_hashtags);
             sliderView = itemView.findViewById(R.id.club_page_post_image);
 
         }

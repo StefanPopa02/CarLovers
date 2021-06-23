@@ -18,7 +18,8 @@ public class NewCarItem {
     private String brandLogo;
     private Timestamp timeAdded;
 
-    public NewCarItem(){}
+    public NewCarItem() {
+    }
 
     public NewCarItem(String letter, String brand, String model, String year, String version, String engine, String caracteristici, List<String> carPhoto, String brandLogo) {
         this.letter = letter;

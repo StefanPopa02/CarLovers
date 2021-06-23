@@ -54,7 +54,6 @@ public class NewsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-
     private String mParam1;
     private String mParam2;
     private RecyclerView recyclerView;
@@ -66,16 +65,6 @@ public class NewsFragment extends Fragment {
     private FloatingActionButton floatingActionButton;
 
     public NewsFragment() {
-        // Required empty public constructor
-    }
-
-    public static NewsFragment newInstance(String param1, String param2) {
-        NewsFragment fragment = new NewsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -104,7 +93,7 @@ public class NewsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((WelcomeActivity)getActivity()).bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        ((WelcomeActivity) getActivity()).bottomNavigationView.getMenu().getItem(0).setChecked(true);
         Log.d("PROFILE_FRAGMENT", "onResume called: ");
     }
 
@@ -243,15 +232,6 @@ public class NewsFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 updatePreferences(finalRssNames, checkedItemsTmp[0]);
-//                new Handler().postAtTime(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Intent i = new Intent(MainActivity.this, MainActivity.class);
-//                        startActivity(new Intent(MainActivity.this, MainActivity.class));
-//                        finish();
-//                    }
-//                }, 1200);
-                //getActivity().getSupportFragmentManager().beginTransaction().detach(new NewsFragment()).attach(new NewsFragment()).commit();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NewsFragment()).commit();
             }
         });
@@ -259,7 +239,6 @@ public class NewsFragment extends Fragment {
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //checkedItemsTmp[0] = Arrays.copyOf(finalCheckedItems, finalCheckedItems.length); NU E NECESAR
             }
         });
 

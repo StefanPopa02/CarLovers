@@ -38,7 +38,6 @@ public class ClubFeedFragment extends Fragment {
     private List<Post> posts;
 
     public ClubFeedFragment() {
-        // Required empty public constructor
     }
 
     @Override

@@ -7,7 +7,7 @@ public class MediaObject {
     private String imgUrl;
     private String videoUrl;
 
-    public MediaObject(){
+    public MediaObject() {
 
     }
 

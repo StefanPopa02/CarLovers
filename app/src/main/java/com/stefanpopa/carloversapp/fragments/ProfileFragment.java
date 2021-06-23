@@ -245,7 +245,7 @@ public class ProfileFragment extends Fragment {
                     List<DocumentSnapshot> documentsResult = task.getResult().getDocuments();
                     for (DocumentSnapshot doc : documentsResult) {
                         userCars.add(doc.toObject(NewCarItem.class));
-                        userCars.get(userCars.size()-1).setDocId(doc.getId());
+                        userCars.get(userCars.size() - 1).setDocId(doc.getId());
                     }
                     for (NewCarItem carItem : userCars) {
                         Collections.reverse(carItem.getCarPhoto());

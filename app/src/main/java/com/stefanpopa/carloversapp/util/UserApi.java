@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,8 +22,17 @@ public class UserApi extends Application {
     private UserProfile userProfile;
     private NewCarItem currentEditCar;
     private boolean editCar;
+    private MarkerOptions marker;
 
-    public void setEditCar(boolean editCar){
+    public MarkerOptions getMarker() {
+        return marker;
+    }
+
+    public void setMarker(MarkerOptions marker) {
+        this.marker = marker;
+    }
+
+    public void setEditCar(boolean editCar) {
         this.editCar = editCar;
     }
 
@@ -40,7 +50,7 @@ public class UserApi extends Application {
         return instance;
     }
 
-    public interface UsernameCallback{
+    public interface UsernameCallback {
         void isUsernameExist(String username_txt);
     }
 

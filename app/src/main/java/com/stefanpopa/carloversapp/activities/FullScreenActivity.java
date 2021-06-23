@@ -33,7 +33,7 @@ public class FullScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen);
         uri = Uri.parse(getIntent().getStringExtra("Uri"));
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
             remainingPosition = savedInstanceState.getLong("seek", 0);
         }
 

@@ -80,8 +80,6 @@ public class PostDetailsFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Log.d("POST_ADAPTER", "ON PAUSE CALLED IN CLUB PAGE");
-//        PostAdapter.ViewHolder postAdapterVH = (PostAdapter.ViewHolder) recyclerViewImg.findViewHolderForAdapterPosition(0);
-//        postAdapter.releasePlayer(postAdapterVH);
     }
 
     @Override
@@ -172,7 +170,7 @@ public class PostDetailsFragment extends Fragment {
                             case ADDED:
                                 Log.d("POST_DETAILS_FRAGMENT", "New comment: " + dc.getDocument().getData());
                                 comments.add(dc.getDocument().toObject(Comment.class));
-                                comments.get(comments.size()-1).setCommentDocId(dc.getDocument().getId());
+                                comments.get(comments.size() - 1).setCommentDocId(dc.getDocument().getId());
                                 break;
                             case MODIFIED:
                                 Log.d("POST_DETAILS_FRAGMENT", "Modified comment: " + dc.getDocument().getData());

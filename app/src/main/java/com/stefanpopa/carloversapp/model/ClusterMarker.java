@@ -12,6 +12,8 @@ public class ClusterMarker implements ClusterItem {
     private String snippet;
     private String iconPicture;
     private UserProfile user;
+    private boolean isMeeting;
+    private Meeting meeting;
 
     public ClusterMarker(LatLng position, String title, String snippet, String iconPicture, UserProfile user) {
         this.position = position;
@@ -19,6 +21,31 @@ public class ClusterMarker implements ClusterItem {
         this.snippet = snippet;
         this.iconPicture = iconPicture;
         this.user = user;
+        this.isMeeting = false;
+    }
+
+    public Meeting getMeeting() {
+        return meeting;
+    }
+
+    public void setMeeting(Meeting meeting) {
+        this.meeting = meeting;
+    }
+
+    public boolean isMeeting() {
+        return isMeeting;
+    }
+
+    public void setMeeting(boolean meeting) {
+        isMeeting = meeting;
+    }
+
+    public ClusterMarker(LatLng position, String title, String snippet, String iconPicture, boolean isMeeting) {
+        this.position = position;
+        this.title = title;
+        this.snippet = snippet;
+        this.iconPicture = iconPicture;
+        this.isMeeting = isMeeting;
     }
 
     public ClusterMarker() {
